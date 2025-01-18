@@ -23,9 +23,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/main/index.vue')
   },
   {
-    path: '/taobao/home',
+    path: '/taobao',
     name: 'taobao',
-    component: () => import('@/views/taobao/home/index.vue')
+    component: () => import('@/views/taobao/home/index.vue'),
+    children: [
+      {
+        path: 'category',
+        name: 'category',
+        component: () => import('@/views/taobao/category/index.vue')
+      },
+      {
+        path: 'commodity',
+        name: 'commodity',
+        component: () => import('@/views/taobao/commodity/index.vue')
+      }
+    ]
   }
 ]
 

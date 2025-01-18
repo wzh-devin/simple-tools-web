@@ -1,17 +1,24 @@
 <script setup lang="ts">
-/**
- * 2025/1/18 23:48
- * @author <a href="https://github.com/wzh-devin">devin</a>
- * @description 淘宝千牛主页面
- * @version 1.0
- * @since 1.0
- */
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { House, Document, Goods, User } from '@element-plus/icons-vue'
+import { ContainerArea, MenuArea } from '@/views/taobao/home/module'
 </script>
 
 <template>
-  <div class="taobao-home">
-    <h1>淘宝千牛页面</h1>
+  <div class="taobao-container">
+    <!-- 顶部菜单区域 -->
+    <menu-area />
+    <!-- 内容区域 -->
+    <container-area />
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped>
+.taobao-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f7ff;
+}
+</style>

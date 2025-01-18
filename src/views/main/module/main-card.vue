@@ -15,7 +15,7 @@ const router = useRouter()
  * 跳转链接
  */
 const jumpLinkHandler = () => {
-  router.push('/taobao/home')
+  router.push('/taobao')
 }
 </script>
 
