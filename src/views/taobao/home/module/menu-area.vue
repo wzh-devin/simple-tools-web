@@ -46,8 +46,8 @@ const handleMenuClick = (key: string) => {
 
 <style scoped lang="less">
 .menu-area {
-  padding: 8px;
-  min-height: 70px;
+  padding: 6px;
+  min-height: 60px;
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.8),
@@ -60,17 +60,17 @@ const handleMenuClick = (key: string) => {
   align-items: center;
 
   .menu-card {
-    max-width: 800px;
+    max-width: 700px;
     width: 100%;
     margin: 0;
     background: rgba(255, 255, 255, 0.6);
     border: none;
-    border-radius: 35px;
+    border-radius: 30px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
     :deep(.el-card__body) {
-      padding: 4px 20px;
+      padding: 2px 12px;
     }
   }
 
@@ -94,12 +94,10 @@ const handleMenuClick = (key: string) => {
     .el-menu-item {
       height: 32px;
       line-height: 32px;
-      margin: 0 8px;
+      margin: 0 4px;
       border-radius: 16px;
-      padding: 0 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0 18px;
+      font-size: 14px;
 
       &:hover,
       &.is-active {
@@ -109,11 +107,11 @@ const handleMenuClick = (key: string) => {
 
       .el-icon {
         margin-right: 6px;
-        margin-bottom: 0;
+        font-size: 16px;
       }
 
       span {
-        line-height: 1;
+        line-height: 32px;
       }
     }
   }
