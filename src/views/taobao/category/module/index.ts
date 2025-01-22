@@ -7,5 +7,6 @@
  */
 import OperationCmp from '@/views/taobao/category/module/operation-cmp.vue'
 import TableCmp from '@/views/taobao/category/module/table-cmp.vue'
+import ModalCmp from '@/views/taobao/category/module/modal-cmp.vue'
 
-export { OperationCmp, TableCmp }
+export { OperationCmp, TableCmp, ModalCmp }

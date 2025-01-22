@@ -6,43 +6,38 @@
  * @version 1.0
  * @since 1.0
  */
-import { OperationCmp, TableCmp } from '@/views/taobao/category/module'
+import {
+  ModalCmp,
+  OperationCmp,
+  TableCmp
+} from '@/views/taobao/category/module'
+import { ref } from 'vue'
 
-// const getTableData = async () => {
-//   loading.value = true // 开始加载
-//   try {
-//     tableData.value = res.data
-//     // 动态生成过滤规则
-//     filterRules.value =
-//       tableData.value?.map((item) => ({
-//         text: item.name,
-//         value: item.id
-//       })) || []
-//   } catch (error) {
-//     console.error('获取类目数据失败:', error)
-//   } finally {
-//     loading.value = false // 结束加载
-//   }
-// }
+const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
-defineOptions({
-  name: 'CategoryManagement' // 添加组件名称以解决 linter 错误
-})
+/**
+ * 执行新增
+ */
+const handleAdd = () => {
+  console.log('执行新增')
+  modalRef.value?.setDialogVisible(true)
+}
 </script>
 
 <template>
   <div class="category-container">
     <!-- 操作按钮区域 -->
-    <operation-cmp/>
+    <operation-cmp @handle-add="handleAdd" />
 
     <!-- 表格区域 -->
-    <table-cmp/>
+    <table-cmp />
+
+    <modal-cmp ref="modalRef" />
   </div>
 </template>
 
 <style scoped lang="less">
 .category-container {
-
   :deep(.el-table) {
     margin-top: 4px;
     border-radius: 8px;

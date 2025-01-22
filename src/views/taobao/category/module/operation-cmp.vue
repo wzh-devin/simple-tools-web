@@ -7,6 +7,9 @@
  * @since 1.0
  */
 import { Delete, Plus, Search } from '@element-plus/icons-vue'
+import { defineEmits } from 'vue'
+
+const emit = defineEmits(['handleAdd'])
 
 // 处理批量删除
 const handleBatchDelete = () => {
@@ -16,6 +19,7 @@ const handleBatchDelete = () => {
 // 处理新增
 const handleAdd = () => {
   // TODO: 实现新增逻辑
+  emit('handleAdd', 'test')
 }
 </script>
 
