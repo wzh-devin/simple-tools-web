@@ -6,12 +6,18 @@
  * @version 1.0
  * @since 1.0
  */
-import {
-  ModalCmp,
-  OperationCmp,
-  TableCmp
-} from '@/views/taobao/category/module'
-import { ref } from 'vue'
+import { OperationCmp, TableCmp } from '@/views/taobao/category/module'
+import { computed, onMounted, ref } from 'vue'
+import useCategoryStore from '@/stores/category/category.ts'
+import modalConfig from '@/views/taobao/category/config/category.config.ts'
+import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
+import { ElMessage } from 'element-plus'
+
+const categoryStore = useCategoryStore()
+
+onMounted(async () => {
+  await categoryStore.getCategoryListAction()
+})
 
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
@@ -19,8 +25,21 @@ const modalRef = ref<InstanceType<typeof ModalCmp>>()
  * 执行新增
  */
 const handleAdd = () => {
-  console.log('执行新增')
-  modalRef.value?.setDialogVisible(true)
+  modalRef.value?.setModalVisible(true)
+}
+
+const modalConfigRef = computed(() => {
+  // TODO 自定义配置内容
+  return modalConfig
+})
+
+const handleConfirm = async (formData: any) => {
+  try {
+    console.log('创建数据', formData)
+  } catch (error) {
+    console.error('创建失败:', error)
+    ElMessage.error('创建失败')
+  }
 }
 </script>
 
@@ -32,7 +51,12 @@ const handleAdd = () => {
     <!-- 表格区域 -->
     <table-cmp />
 
-    <modal-cmp ref="modalRef" />
+    <!-- 弹窗组件 -->
+    <modal-cmp
+      ref="modalRef"
+      :modal-config="modalConfigRef"
+      @confirm="handleConfirm"
+    />
   </div>
 </template>
 

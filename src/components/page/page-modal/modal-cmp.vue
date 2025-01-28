@@ -6,21 +6,61 @@
  * @version 1.0
  * @since 1.0
  */
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, reactive, defineEmits } from 'vue'
 import type { IModalProps } from '@/components/page/page-modal/modal'
 
 // 定义props
 const props = defineProps<IModalProps>()
 
+// 定义事件
+const emit = defineEmits(['confirm'])
+
 // 定义内部属性
 const dialogVisible = ref(false)
 const isNew = ref(true)
+const initData: any = {}
+
+for (const item of props.modalConfig.formItems) {
+  initData[item.prop] = item.initValue ?? ''
+}
+
+const formData = reactive<any>(initData)
+
+const modalConfig = props.modalConfig
 
 /**
  * 设置弹窗显示状态
  */
 const setModalVisible = (visible: boolean) => {
   dialogVisible.value = visible
+  if (!visible) {
+    clearForm()
+  }
+}
+
+/**
+ * 确认函数
+ */
+const handleConfirm = async () => {
+  try {
+    // 触发确认事件，将表单数据传递给父组件
+    await emit('confirm', formData)
+    // 成功后关闭弹窗
+    dialogVisible.value = false
+    clearForm()
+  } catch (error) {
+    console.error('确认操作失败:', error)
+  }
+}
+
+/**
+ * 清空表单数据
+ */
+const clearForm = () => {
+  // 清空表单数据
+  Object.keys(formData).forEach((key) => {
+    formData[key] = ''
+  })
 }
 
 defineExpose({
@@ -40,21 +80,19 @@ defineExpose({
     destroy-on-close
   >
     <el-form :model="formData" label-width="80px">
-      <!--      <el-form-item label="类目名称">-->
-      <!--        <el-input v-model="name" placeholder="请输入类目名称" />-->
-      <!--      </el-form-item>-->
-      <!--      <el-form-item label="类目描述">-->
-      <!--        <el-input-->
-      <!--          v-model="description"-->
-      <!--          type="textarea"-->
-      <!--          placeholder="请输入类目描述"-->
-      <!--        />-->
-      <!--      </el-form-item>-->
-      <template v-for="(index, item) in modalConfig.formItems" :key="index">
+      <template v-for="(item, index) in modalConfig.formItems" :key="index">
         <el-form-item :label="item.label" :prop="item.prop">
           <!-- 输入文本 -->
           <template v-if="item.type === 'input'">
             <el-input
+              type="input"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder"
+            ></el-input>
+          </template>
+          <template v-if="item.type === 'textarea'">
+            <el-input
+              type="textarea"
               v-model="formData[item.prop]"
               :placeholder="item.placeholder"
             ></el-input>
@@ -69,7 +107,7 @@ defineExpose({
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleConfirm"> 确认 </el-button>
+        <el-button type="primary" @click="handleConfirm">确认</el-button>
       </span>
     </template>
   </el-dialog>

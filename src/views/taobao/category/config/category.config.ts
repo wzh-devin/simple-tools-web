@@ -1,5 +1,4 @@
-import type { ICategory } from '@/stores/category/i-category'
-import { dateFormat } from '@/utils/format.ts'
+import type { IModalConfig } from '@/components/page/page-modal/modal'
 
 /**
  * 2025/1/22 17:42
@@ -8,46 +7,26 @@ import { dateFormat } from '@/utils/format.ts'
  * @version 1.0
  * @since 1.0
  */
-const categoryConfig = {
+const modalConfig: IModalConfig = {
   pageName: 'category',
-  propsList: [
+  header: {
+    newTitle: '新增类目',
+    editTitle: '修改类目'
+  },
+  formItems: [
     {
-      type: 'selection',
-      width: 55,
-      align: 'center'
-    },
-    {
+      type: 'input',
       prop: 'name',
       label: '类目名称',
       align: 'center'
     },
     {
+      type: 'textarea',
       prop: 'description',
       label: '类目描述',
       align: 'center'
-    },
-    {
-      type: 'timer',
-      prop: 'createTime',
-      label: '创建时间',
-      align: 'center',
-      formatter: (row: ICategory) => dateFormat(row.createTime)
-    },
-    {
-      type: 'timer',
-      prop: 'updateTime',
-      label: '更新时间',
-      align: 'center',
-      formatter: (row: ICategory) => dateFormat(row.updateTime)
-    },
-    {
-      type: 'opera',
-      label: '操作',
-      align: 'center',
-      width: 200,
-      fixed: 'right'
     }
-  ]
+  ],
+  options: []
 }
-
-export default categoryConfig
+export default modalConfig

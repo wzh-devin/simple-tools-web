@@ -19,6 +19,7 @@ const handleBatchDelete = () => {
 // 处理新增
 const handleAdd = () => {
   // TODO: 实现新增逻辑
+  console.log('新增')
   emit('handleAdd', 'test')
 }
 </script>
