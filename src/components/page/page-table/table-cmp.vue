@@ -44,7 +44,11 @@ defineExpose({
     >
       <template #default="{ row }">
         <template v-if="column.type === 'boolean'">
-          <el-button :type="row.isActive === 1 ? 'success' : 'danger'" disabled>
+          <el-button
+            :type="row.isActive === 1 ? 'success' : 'danger'"
+            disabled
+            size="small"
+          >
             {{ row.isActive === 1 ? '启用' : '禁用' }}
           </el-button>
         </template>
