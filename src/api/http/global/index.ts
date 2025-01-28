@@ -8,7 +8,6 @@
 import axios, { type AxiosInstance } from 'axios'
 import { BASE_URL, TIME_OUT } from '../config'
 import { localCache } from '@/utils/cache.ts'
-import { LOGIN_TOKEN } from '@/global/constant.ts'
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -18,12 +17,6 @@ const axiosInstance: AxiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (request) => {
-    // 从缓存中获取token
-    const token = localCache.getCache(LOGIN_TOKEN)
-    if (request.headers && token) {
-      // 将token设置到请求头中
-      request.headers!.Authorization = `Bearer ${token}`
-    }
     return request
   },
   (error) => {

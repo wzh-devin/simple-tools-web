@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { House, Document, Goods, User } from '@element-plus/icons-vue'
 import { ContainerArea, MenuArea } from '@/views/taobao/home/module'
 </script>
 
