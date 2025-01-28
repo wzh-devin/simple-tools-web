@@ -15,6 +15,7 @@ import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
 import { ActiveStatus } from '@/global/enums/active-status.ts'
+import { ElMessage } from 'element-plus'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
@@ -63,13 +64,13 @@ const tableConfigRef = computed(() => {
 
 const handleConfirm = async (formData: any) => {
   try {
-    console.log('创建数据', formData)
     await categoryStore.addCategoryAction({
       id: '',
       ...formData,
       isActive: ActiveStatus.NORMAL
     })
     await initData()
+    ElMessage.success('创建成功')
   } catch (error) {
     ElMessage.error('创建失败')
   }
