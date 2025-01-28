@@ -9,7 +9,7 @@ import { get, post } from '@/api/http'
 
 export interface ICategoryReq {
   categoryId: number
-  categoryName: string
+  name: string
   description: string
   isActive: number
 }
@@ -39,6 +39,16 @@ export function getCategoryListByParams(data: ICategoryReq) {
 export function addCategory(data: ICategoryReq) {
   return post({
     url: '/taobao/category/addCategory',
+    data
+  })
+}
+
+/**
+ * 修改类目
+ */
+export function editCategory(data: ICategoryReq) {
+  return post({
+    url: '/taobao/category/editCategory',
     data
   })
 }

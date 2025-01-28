@@ -31,10 +31,12 @@ const modalConfig = props.modalConfig
 /**
  * 设置弹窗显示状态
  */
-const setModalVisible = (visible: boolean) => {
-  dialogVisible.value = visible
-  if (!visible) {
-    // 重置表单
+const setModalVisible = (tag: boolean, itemData?: any) => {
+  dialogVisible.value = true
+  isNew.value = tag
+  if (!tag && itemData) {
+    Object.assign(formData, itemData)
+  } else {
     clearFormData()
   }
 }
@@ -83,7 +85,6 @@ defineExpose({
           <!-- 输入文本 -->
           <template v-if="item.type === 'input'">
             <el-input
-              type="input"
               v-model="formData[item.prop]"
               :placeholder="item.placeholder"
             ></el-input>

@@ -7,7 +7,7 @@
  */
 import { defineStore } from 'pinia'
 import type { ICategory, ICategoryState } from '@/stores/category/i-category'
-import { addCategory, getCategoryAllList, type ICategoryReq } from '@/api/taobao/category'
+import { addCategory, editCategory, getCategoryAllList, type ICategoryReq } from '@/api/taobao/category'
 
 const useCategoryStore = defineStore('category', {
   state: (): ICategoryState => ({
@@ -23,6 +23,10 @@ const useCategoryStore = defineStore('category', {
     // 新增类目
     async addCategoryAction(data: ICategoryReq) {
       await addCategory(data)
+    },
+    // 修改类目
+    async editCategoryAction(data: ICategoryReq) {
+      await editCategory(data)
     }
   }
 })

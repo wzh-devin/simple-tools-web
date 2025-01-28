@@ -14,7 +14,7 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
-import { ActiveStatus } from '@/global/enums/active-status.ts'
+import type { ICategory } from '@/stores/category/i-category'
 import { ElMessage } from 'element-plus'
 
 const categoryStore = useCategoryStore()
@@ -24,23 +24,12 @@ const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 onMounted(async () => {
-  await initData()
+  await refreshTable()
 })
 
-/**
- * 刷新数据
- */
-const initData = async () => {
-  if (tableRef.value) {
-    tableRef.value.loading = true
-  }
-  try {
-    await categoryStore.getCategoryListAction()
-  } finally {
-    if (tableRef.value) {
-      tableRef.value.loading = false
-    }
-  }
+// 刷新
+const refreshTable = async () => {
+  await categoryStore.getCategoryListAction()
 }
 
 /**
@@ -64,16 +53,38 @@ const tableConfigRef = computed(() => {
 
 const handleConfirm = async (formData: any) => {
   try {
-    await categoryStore.addCategoryAction({
-      id: '',
-      ...formData,
-      isActive: ActiveStatus.NORMAL
-    })
-    await initData()
-    ElMessage.success('创建成功')
+    if (formData.id) {
+      // 执行编辑操作
+      await categoryStore.editCategoryAction(formData)
+    } else {
+      // 执行新增操作
+      await categoryStore.addCategoryAction(formData)
+    }
+    await refreshTable()
+    ElMessage.success('执行成功')
   } catch (error) {
     ElMessage.error('创建失败')
   }
+}
+
+// 处理编辑
+const handleEdit = (row: ICategory) => {
+  console.log(row)
+  modalRef.value?.setModalVisible(false, row) // 传递完整数据到弹窗
+}
+
+// 处理删除
+const handleDelete = (row: ICategory) => {
+  console.log('删除数据', row.id) // 可以获取到 id
+  // 执行删除操作
+}
+
+// 选中的行数据
+const selectedRows = ref<ICategory[]>([])
+
+// 处理选择变化
+const handleSelectionChange = (selection: ICategory[]) => {
+  selectedRows.value = selection
 }
 </script>
 
@@ -83,7 +94,13 @@ const handleConfirm = async (formData: any) => {
     <operation-cmp @handle-add="handleAdd" />
 
     <!-- 表格区域 -->
-    <table-cmp ref="tableRef" :table-config="tableConfigRef" />
+    <table-cmp
+      ref="tableRef"
+      :table-config="tableConfigRef"
+      @edit="handleEdit"
+      @delete="handleDelete"
+      @selection-change="handleSelectionChange"
+    />
 
     <!-- 弹窗组件 -->
     <modal-cmp
