@@ -16,7 +16,7 @@ const modalConfig: IModalConfig = {
   formItems: [
     {
       type: 'input',
-      prop: 'name',
+      prop: 'categoryName',
       label: '类目名称',
       align: 'center'
     },

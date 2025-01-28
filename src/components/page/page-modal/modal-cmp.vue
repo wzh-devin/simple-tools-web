@@ -34,10 +34,8 @@ const modalConfig = props.modalConfig
 const setModalVisible = (visible: boolean) => {
   dialogVisible.value = visible
   if (!visible) {
-    // 关闭时重置表单
-    Object.keys(formData).forEach((key) => {
-      formData[key] = ''
-    })
+    // 重置表单
+    clearFormData()
   }
 }
 
@@ -49,9 +47,18 @@ const handleConfirm = async () => {
     // 触发确认事件，将表单数据传递给父组件
     await emit('confirm', formData)
     dialogVisible.value = false
+    clearFormData()
   } catch (error) {
     console.error('确认操作失败:', error)
   }
+}
+
+// 重置表单信息
+const clearFormData = () => {
+  // 关闭时重置表单
+  Object.keys(formData).forEach((key) => {
+    formData[key] = ''
+  })
 }
 
 defineExpose({

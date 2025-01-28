@@ -6,8 +6,8 @@
  * @since 1.0
  */
 import { defineStore } from 'pinia'
-import type { ICategoryState } from '@/stores/category/i-category'
-import { getCategoryAllList } from '@/api/taobao/category'
+import type { ICategory, ICategoryState } from '@/stores/category/i-category'
+import { addCategory, getCategoryAllList, type ICategoryReq } from '@/api/taobao/category'
 
 const useCategoryStore = defineStore('category', {
   state: (): ICategoryState => ({
@@ -19,6 +19,10 @@ const useCategoryStore = defineStore('category', {
     async getCategoryListAction() {
       const categoryList = await getCategoryAllList()
       this.categoryList = categoryList.data
+    },
+    // 新增类目
+    async addCategoryAction(data: ICategoryReq) {
+      await addCategory(data)
     }
   }
 })

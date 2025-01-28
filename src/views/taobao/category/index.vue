@@ -14,6 +14,7 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
+import { ActiveStatus } from '@/global/enums/active-status.ts'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
@@ -22,6 +23,13 @@ const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 onMounted(async () => {
+  await initData()
+})
+
+/**
+ * 刷新数据
+ */
+const initData = async () => {
   if (tableRef.value) {
     tableRef.value.loading = true
   }
@@ -32,7 +40,7 @@ onMounted(async () => {
       tableRef.value.loading = false
     }
   }
-})
+}
 
 /**
  * 执行新增
@@ -56,6 +64,12 @@ const tableConfigRef = computed(() => {
 const handleConfirm = async (formData: any) => {
   try {
     console.log('创建数据', formData)
+    await categoryStore.addCategoryAction({
+      id: '',
+      ...formData,
+      isActive: ActiveStatus.NORMAL
+    })
+    await initData()
   } catch (error) {
     ElMessage.error('创建失败')
   }
