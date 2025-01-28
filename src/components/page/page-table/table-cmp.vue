@@ -2,51 +2,33 @@
 /**
  * 2025/1/22 16:21
  * @author <a href="https://github.com/wzh-devin">devin</a>
- * @description 表格组件
+ * @description 表格组件封装
  * @version 1.0
  * @since 1.0
  */
-import { dateFormat } from '@/utils/format.ts'
 import type { ICategory } from '@/stores/category/i-category'
-import { onMounted, ref } from 'vue'
-import useCategoryStore from '@/stores/category/category.ts'
-import { storeToRefs } from 'pinia'
-import categoryConfig from '@/views/taobao/category/config/category.config.ts'
+import { computed, defineProps, ref } from 'vue'
+import type { ITableProps } from '@/components/page/page-table/table'
+import { dateFormat } from '@/utils/format.ts'
 
-// 组件挂载的时候，执行
-onMounted(() => {
-  initTableData()
-})
+const props = defineProps<ITableProps>()
 
-const categoryStore = useCategoryStore()
+// 使用计算属性来保持响应式
+const tableData = computed(() => props.tableConfig.tableData)
 
-// 获取category列表数据
-const { categoryList } = storeToRefs(categoryStore)
-// 添加加载状态
+// 加载状态
 const loading = ref(true)
 
-// 初始化表格数据
-const initTableData = () => {
-  // 发送请求
-  categoryStore.getCategoryListAction()
-  loading.value = false
-}
-
-// 处理编辑
-const handleEdit = (row: ICategory) => {
-  console.log('编辑', row)
-}
-
-// 处理删除
-const handleDelete = (row: ICategory) => {
-  console.log('删除', row)
-}
+// 暴露加载状态给父组件
+defineExpose({
+  loading
+})
 </script>
 
 <template>
   <el-table
     v-loading="loading"
-    :data="categoryList"
+    :data="tableData"
     border
     style="width: 100%"
     :filter-multiple="false"
@@ -54,11 +36,18 @@ const handleDelete = (row: ICategory) => {
     element-loading-background="rgba(255, 255, 255, 0.8)"
   >
     <el-table-column
-      v-for="(column, index) in categoryConfig.propsList"
+      v-for="(column, index) in props.tableConfig.propList"
       :key="index"
       v-bind="column"
+      :fixed="column.fixed"
+      :align="column.align"
     >
       <template #default="{ row }">
+        <template v-if="column.type === 'boolean'">
+          <el-button :type="row.isActive === 1 ? 'success' : 'danger'" disabled>
+            {{ row.isActive === 1 ? '启用' : '禁用' }}
+          </el-button>
+        </template>
         <template v-if="column.type === 'timer'">
           {{ dateFormat(row[column.prop as keyof ICategory]) }}
         </template>

@@ -6,20 +6,33 @@
  * @version 1.0
  * @since 1.0
  */
-import { OperationCmp, TableCmp } from '@/views/taobao/category/module'
+import { OperationCmp } from '@/views/taobao/category/module'
 import { computed, onMounted, ref } from 'vue'
 import useCategoryStore from '@/stores/category/category.ts'
-import modalConfig from '@/views/taobao/category/config/category.config.ts'
+import modalConfig from '@/views/taobao/category/config/modal.config.ts'
 import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
-import { ElMessage } from 'element-plus'
+import type TableCmp from '@/components/page/page-table/table-cmp.vue'
+import tableConfig from '@/views/taobao/category/config/table.config.ts'
+import { storeToRefs } from 'pinia'
 
 const categoryStore = useCategoryStore()
+const { categoryList } = storeToRefs(categoryStore)
+
+const tableRef = ref<InstanceType<typeof TableCmp>>()
+const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 onMounted(async () => {
-  await categoryStore.getCategoryListAction()
+  if (tableRef.value) {
+    tableRef.value.loading = true
+  }
+  try {
+    await categoryStore.getCategoryListAction()
+  } finally {
+    if (tableRef.value) {
+      tableRef.value.loading = false
+    }
+  }
 })
-
-const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 /**
  * 执行新增
@@ -33,11 +46,17 @@ const modalConfigRef = computed(() => {
   return modalConfig
 })
 
+const tableConfigRef = computed(() => {
+  return {
+    ...tableConfig,
+    tableData: categoryList.value
+  }
+})
+
 const handleConfirm = async (formData: any) => {
   try {
     console.log('创建数据', formData)
   } catch (error) {
-    console.error('创建失败:', error)
     ElMessage.error('创建失败')
   }
 }
@@ -49,7 +68,7 @@ const handleConfirm = async (formData: any) => {
     <operation-cmp @handle-add="handleAdd" />
 
     <!-- 表格区域 -->
-    <table-cmp />
+    <table-cmp ref="tableRef" :table-config="tableConfigRef" />
 
     <!-- 弹窗组件 -->
     <modal-cmp

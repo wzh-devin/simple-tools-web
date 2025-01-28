@@ -25,6 +25,7 @@ declare module 'vue' {
     ModalCmp: typeof import('./src/components/page/page-modal/modal-cmp.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TableCmp: typeof import('./src/components/page/page-table/table-cmp.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
