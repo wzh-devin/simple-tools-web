@@ -6,6 +6,5 @@
  * @since 1.0
  */
 import OperationCmp from '@/views/taobao/category/module/operation-cmp.vue'
-import TableCmp from '@/views/taobao/category/module/table-cmp.vue'
 
-export { OperationCmp, TableCmp }
+export { OperationCmp }
