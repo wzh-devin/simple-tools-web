@@ -11,7 +11,7 @@ import { ref } from 'vue'
 import { Document, Goods } from '@element-plus/icons-vue'
 
 const router = useRouter()
-const activeMenu = ref('home')
+const activeMenu = ref('category')
 
 const menus = [
   { key: 'category', name: '类目管理', icon: Document },
