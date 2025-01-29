@@ -15,7 +15,6 @@ import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
 import type { ICategory } from '@/stores/category/i-category'
-import { ElMessage } from 'element-plus'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
@@ -74,9 +73,16 @@ const handleEdit = (row: ICategory) => {
 }
 
 // 处理删除
-const handleDelete = (row: ICategory) => {
-  console.log('删除数据', row.id) // 可以获取到 id
+const handleDelete = async (row: ICategory) => {
   // 执行删除操作
+  try {
+    await categoryStore.deleteCategoryAction(row.id)
+    await refreshTable()
+    ElMessage.success('删除成功')
+  } catch (error) {
+    console.log(error)
+    ElMessage.error(`删除失败：${error?.errMsg}`)
+  }
 }
 
 // 选中的行数据

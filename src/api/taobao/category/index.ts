@@ -47,8 +47,25 @@ export function addCategory(data: ICategoryReq) {
  * 修改类目
  */
 export function editCategory(data: ICategoryReq) {
-  return post({
-    url: '/taobao/category/editCategory',
-    data
-  })
+  try {
+    return post({
+      url: '/taobao/category/editCategory',
+      data
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 删除类目
+ */
+export async function deleteCategory(id: number) {
+  try {
+    await post({
+      url: `/taobao/category/deleteCategory?id=${id}`
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
