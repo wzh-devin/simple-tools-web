@@ -69,3 +69,16 @@ export async function deleteCategory(id: number) {
     return Promise.reject(error)
   }
 }
+
+/**
+ * 获取二级类目
+ */
+export async function getCategoryItems(id: number) {
+  try {
+    return await get({
+      url: `/taobao/category/getCategoryItems?id=${id}`
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

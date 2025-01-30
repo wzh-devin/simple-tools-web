@@ -12,12 +12,14 @@ import {
   deleteCategory,
   editCategory,
   getCategoryAllList,
+  getCategoryItems,
   type ICategoryReq
 } from '@/api/taobao/category'
 
 const useCategoryStore = defineStore('category', {
   state: (): ICategoryState => ({
     categoryList: [],
+    categoryItems: [],
     selectedRows: []
   }),
   actions: {
@@ -40,6 +42,16 @@ const useCategoryStore = defineStore('category', {
         await deleteCategory(id)
       } catch (error) {
         return Promise.reject(error)
+      }
+    },
+    // 获取子类目列表
+    async getCategoryItemsAction(categoryId: string | number) {
+      try {
+        const res = await getCategoryItems(categoryId)
+        this.categoryItems = res.data
+      } catch (error) {
+        console.error('获取子类目列表失败:', error)
+        throw error
       }
     }
   }

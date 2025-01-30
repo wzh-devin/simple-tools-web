@@ -16,5 +16,6 @@ export interface ICategory {
 
 export interface ICategoryState {
   categoryList: ICategory[]
+  categoryItems: ICategory[]
   selectedRows: ICategory[]
 }

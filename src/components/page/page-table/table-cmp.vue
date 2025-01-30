@@ -12,7 +12,7 @@ import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
 
 const props = defineProps<ITableProps>()
-const emit = defineEmits(['edit', 'delete', 'selection-change'])
+const emit = defineEmits(['edit', 'delete', 'selection-change', 'handleChildTree'])
 
 // 使用计算属性来保持响应式
 const tableData = computed(() => props.tableConfig.tableData)
@@ -32,6 +32,11 @@ const handleEdit = (row: ICategory) => {
 // 处理删除
 const handleDelete = (row: ICategory) => {
   emit('delete', { ...row }) // 传递完整的行数据，包括 id
+}
+
+// 执行跳转页面
+const handleChildTree = (row: ICategory) => {
+  emit('handleChildTree', row.id)
 }
 
 defineExpose({
@@ -81,13 +86,19 @@ defineExpose({
             {{ dateFormat(row[column.prop as keyof ICategory]) }}
           </template>
           <template v-if="column.type === 'opera'">
-            <el-button type="success" link>查看子类目</el-button>
+            <el-button
+              type="success"
+              v-if="column.haveChild"
+              link
+              @click="handleChildTree(row)"
+              >查看子类目</el-button
+            >
             <el-button type="primary" link @click="handleEdit(row)"
-              >编辑</el-button
-            >
+              >编辑
+            </el-button>
             <el-button type="danger" link @click="handleDelete(row)"
-              >删除</el-button
-            >
+              >删除
+            </el-button>
           </template>
         </template>
       </el-table-column>

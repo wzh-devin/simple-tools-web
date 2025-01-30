@@ -15,9 +15,11 @@ import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
 import type { ICategory } from '@/stores/category/i-category'
+import { useRouter } from 'vue-router'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
+const router = useRouter()
 
 const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
@@ -92,6 +94,16 @@ const selectedRows = ref<ICategory[]>([])
 const handleSelectionChange = (selection: ICategory[]) => {
   selectedRows.value = selection
 }
+
+// 跳转子节点
+const handleChildTree = (id: number) => {
+  router.push({
+    path: '/taobao/category/sub-category',
+    query: {
+      categoryId: id.toString()
+    }
+  })
+}
 </script>
 
 <template>
@@ -106,6 +118,7 @@ const handleSelectionChange = (selection: ICategory[]) => {
       @edit="handleEdit"
       @delete="handleDelete"
       @selection-change="handleSelectionChange"
+      @handle-child-tree="handleChildTree"
     />
 
     <!-- 弹窗组件 -->

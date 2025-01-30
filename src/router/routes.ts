@@ -36,6 +36,12 @@ const routes: Array<RouteRecordRaw> = [
         path: 'commodity',
         name: 'commodity',
         component: () => import('@/views/taobao/commodity/index.vue')
+      },
+      {
+        path: 'category/sub-category',
+        name: 'sub-category',
+        component: () =>
+          import('@/views/taobao/category/sub-category/index.vue')
       }
     ]
   }

@@ -15,6 +15,8 @@ const route = useRoute()
 // 生成面包屑数据
 const breadcrumbs = computed(() => {
   const paths = route.path.split('/').filter(Boolean)
+  const query = route.query
+
   return paths.map((path, index) => {
     const fullPath = '/' + paths.slice(0, index + 1).join('/')
     let title = ''
@@ -26,6 +28,9 @@ const breadcrumbs = computed(() => {
       case 'category':
         title = '类目管理'
         break
+      case 'sub-category':
+        title = '子类目管理'
+        break
       case 'commodity':
         title = '商品管理'
         break
@@ -35,7 +40,9 @@ const breadcrumbs = computed(() => {
 
     return {
       title,
-      path: fullPath
+      path:
+        fullPath +
+        (path === 'sub-category' ? `?categoryId=${query.categoryId}` : '')
     }
   })
 })
