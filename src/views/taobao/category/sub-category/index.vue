@@ -34,7 +34,6 @@ onMounted(async () => {
 
 // 刷新
 const refreshTable = async () => {
-  console.log('categoryId:', categoryId)
   if (categoryId) {
     await categoryStore.getCategoryItemsAction(categoryId)
   }
@@ -61,25 +60,24 @@ const tableConfigRef = computed(() => {
 })
 
 const handleConfirm = async (formData: any) => {
-  // try {
-  //   if (formData.id) {
-  //     // 执行编辑操作
-  //     await categoryStore.editCategoryItemAction({
-  //       ...formData,
-  //       categoryId
-  //     })
-  //   } else {
-  //     // 执行新增操作
-  //     await categoryStore.addCategoryItemAction({
-  //       ...formData,
-  //       categoryId
-  //     })
-  //   }
-  //   await refreshTable()
-  //   ElMessage.success('执行成功')
-  // } catch (error) {
-  //   ElMessage.error('操作失败')
-  // }
+  try {
+    if (formData.id && formData.id !== '') {
+      // 执行编辑操作
+      await categoryStore.editCategoryItemAction({
+        ...formData
+      })
+    } else {
+      // 执行新增操作
+      await categoryStore.addCategoryItemAction({
+        ...formData,
+        categoryId
+      })
+    }
+    await refreshTable()
+    ElMessage.success('执行成功')
+  } catch (error) {
+    ElMessage.error('操作失败', error?.errMsg)
+  }
 }
 
 // 处理编辑
@@ -89,14 +87,15 @@ const handleEdit = (row: ICategory) => {
 
 // 处理删除
 const handleDelete = async (row: ICategory) => {
-  // try {
-  //   await categoryStore.deleteCategoryItemAction(row.id)
-  //   await refreshTable()
-  //   ElMessage.success('删除成功')
-  // } catch (error) {
-  //   console.log(error)
-  //   ElMessage.error(`删除失败：${error?.errMsg}`)
-  // }
+  try {
+    console.log(row.id)
+    await categoryStore.deleteCategoryItemAction(row.id)
+    await refreshTable()
+    ElMessage.success('删除成功')
+  } catch (error) {
+    console.log(error)
+    ElMessage.error(`删除失败：${error?.errMsg}`)
+  }
 }
 
 // 选中的行数据

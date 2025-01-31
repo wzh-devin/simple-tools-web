@@ -8,6 +8,7 @@
 export interface ICategory {
   id: number
   name: string
+  parentId?: number
   description: string
   isActive: number
   createTime: string

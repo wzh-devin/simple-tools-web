@@ -9,10 +9,14 @@ import { defineStore } from 'pinia'
 import type { ICategoryState } from '@/stores/category/i-category'
 import {
   addCategory,
+  addCategoryItem,
   deleteCategory,
+  deleteCategoryItem,
   editCategory,
+  editCategoryItem,
   getCategoryAllList,
   getCategoryItems,
+  type ICategoryItemReq,
   type ICategoryReq
 } from '@/api/taobao/category'
 
@@ -52,6 +56,27 @@ const useCategoryStore = defineStore('category', {
       } catch (error) {
         console.error('获取子类目列表失败:', error)
         throw error
+      }
+    },
+    async addCategoryItemAction(data: ICategoryItemReq) {
+      try {
+        await addCategoryItem(data)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async editCategoryItemAction(data: ICategoryItemReq) {
+      try {
+        await editCategoryItem(data)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async deleteCategoryItemAction(id: number) {
+      try {
+        await deleteCategoryItem(id)
+      } catch (error) {
+        return Promise.reject(error)
       }
     }
   }

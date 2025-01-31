@@ -14,6 +14,10 @@ export interface ICategoryReq {
   isActive: number
 }
 
+export interface ICategoryItemReq extends ICategoryReq {
+  itemId: number
+}
+
 /**
  * 获取淘宝的所有类目
  */
@@ -37,6 +41,7 @@ export function getCategoryListByParams(data: ICategoryReq) {
  * 新增类目
  */
 export function addCategory(data: ICategoryReq) {
+  console.log('data', data)
   return post({
     url: '/taobao/category/addCategory',
     data
@@ -77,6 +82,47 @@ export async function getCategoryItems(id: number) {
   try {
     return await get({
       url: `/taobao/category/getCategoryItems?id=${id}`
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 新增二级类目
+ */
+export async function addCategoryItem(data: ICategoryItemReq) {
+  try {
+    await post({
+      url: '/taobao/category/addCategoryItem',
+      data
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 修改二级类目
+ */
+export async function editCategoryItem(data: ICategoryItemReq) {
+  try {
+    await post({
+      url: '/taobao/category/editCategoryItem',
+      data
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 删除二级类目
+ */
+export async function deleteCategoryItem(id: number) {
+  try {
+    await post({
+      url: `/taobao/category/deleteCategoryItem?id=${id}`
     })
   } catch (error) {
     return Promise.reject(error)
