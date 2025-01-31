@@ -8,6 +8,7 @@
 export interface ICategory {
   id: number
   name: string
+  parentId?: number
   description: string
   isActive: number
   createTime: string
@@ -16,5 +17,6 @@ export interface ICategory {
 
 export interface ICategoryState {
   categoryList: ICategory[]
+  categoryItems: ICategory[]
   selectedRows: ICategory[]
 }

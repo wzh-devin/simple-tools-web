@@ -14,25 +14,24 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
+import type { ICategory } from '@/stores/category/i-category'
+import { useRouter } from 'vue-router'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
+const router = useRouter()
 
 const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 onMounted(async () => {
-  if (tableRef.value) {
-    tableRef.value.loading = true
-  }
-  try {
-    await categoryStore.getCategoryListAction()
-  } finally {
-    if (tableRef.value) {
-      tableRef.value.loading = false
-    }
-  }
+  await refreshTable()
 })
+
+// 刷新
+const refreshTable = async () => {
+  await categoryStore.getCategoryListAction()
+}
 
 /**
  * 执行新增
@@ -55,10 +54,55 @@ const tableConfigRef = computed(() => {
 
 const handleConfirm = async (formData: any) => {
   try {
-    console.log('创建数据', formData)
+    if (formData.id) {
+      // 执行编辑操作
+      await categoryStore.editCategoryAction(formData)
+    } else {
+      // 执行新增操作
+      await categoryStore.addCategoryAction(formData)
+    }
+    await refreshTable()
+    ElMessage.success('执行成功')
   } catch (error) {
     ElMessage.error('创建失败')
   }
+}
+
+// 处理编辑
+const handleEdit = (row: ICategory) => {
+  console.log(row)
+  modalRef.value?.setModalVisible(false, row) // 传递完整数据到弹窗
+}
+
+// 处理删除
+const handleDelete = async (row: ICategory) => {
+  // 执行删除操作
+  try {
+    await categoryStore.deleteCategoryAction(row.id)
+    await refreshTable()
+    ElMessage.success('删除成功')
+  } catch (error) {
+    console.log(error)
+    ElMessage.error(`删除失败：${error?.errMsg}`)
+  }
+}
+
+// 选中的行数据
+const selectedRows = ref<ICategory[]>([])
+
+// 处理选择变化
+const handleSelectionChange = (selection: ICategory[]) => {
+  selectedRows.value = selection
+}
+
+// 跳转子节点
+const handleChildTree = (id: number) => {
+  router.push({
+    path: '/taobao/category/sub-category',
+    query: {
+      categoryId: id.toString()
+    }
+  })
 }
 </script>
 
@@ -68,7 +112,14 @@ const handleConfirm = async (formData: any) => {
     <operation-cmp @handle-add="handleAdd" />
 
     <!-- 表格区域 -->
-    <table-cmp ref="tableRef" :table-config="tableConfigRef" />
+    <table-cmp
+      ref="tableRef"
+      :table-config="tableConfigRef"
+      @edit="handleEdit"
+      @delete="handleDelete"
+      @selection-change="handleSelectionChange"
+      @handle-child-tree="handleChildTree"
+    />
 
     <!-- 弹窗组件 -->
     <modal-cmp

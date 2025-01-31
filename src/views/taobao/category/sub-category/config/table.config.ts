@@ -1,27 +1,20 @@
-/**
- * 2025/1/28 16:17
- * @author <a href="https://github.com/wzh-devin">devin</a>
- * @description
- * @version 1.0
- * @since 1.0
- */
 import type { ITableConfig } from '@/components/page/page-table/table'
 
 const tableConfig: ITableConfig = {
   pageName: 'table',
   pageHeader: {
-    title: '类目列表',
-    btnTitle: '新增类目'
+    title: '子类目列表',
+    btnTitle: '新增子类目'
   },
   propList: [
     {
       prop: 'name',
-      label: '类目名称',
+      label: '子类目名称',
       align: 'center'
     },
     {
       prop: 'description',
-      label: '类目描述',
+      label: '子类目描述',
       align: 'center'
     },
     {
@@ -48,7 +41,7 @@ const tableConfig: ITableConfig = {
       label: '操作',
       align: 'center',
       fixed: 'right',
-      haveChild: true
+      haveChild: false // 子类目不需要"查看子类目"按钮
     }
   ],
   tableData: []

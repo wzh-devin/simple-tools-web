@@ -34,7 +34,7 @@ export function post(config: AxiosRequestConfig): Promise {
     axiosInstance.post(config.url, config.data).then(
       // 响应成功，返回数据
       (response) => resolve(response?.data),
-      // 响应失败，返回错误信息
+      // 响应失败，向上抛出错误数据
       (error) => reject(error)
     )
   })
