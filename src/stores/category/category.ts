@@ -51,7 +51,7 @@ const useCategoryStore = defineStore('category', {
     // 获取子类目列表
     async getCategoryItemsAction(categoryId: string | number) {
       try {
-        const res = await getCategoryItems(Number(categoryId))
+        const res = await getCategoryItems(categoryId)
         this.categoryItems = res.data
       } catch (error) {
         console.error('获取子类目列表失败:', error)
