@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="CategoryManage">
 /**
  * 2025/1/19 0:37
  * @author <a href="https://github.com/wzh-devin">devin</a>
@@ -16,6 +16,7 @@ import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
 import type { ICategory } from '@/stores/category/i-category'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 const categoryStore = useCategoryStore()
 const { categoryList } = storeToRefs(categoryStore)
@@ -76,14 +77,13 @@ const handleEdit = (row: ICategory) => {
 
 // 处理删除
 const handleDelete = async (row: ICategory) => {
-  // 执行删除操作
   try {
     await categoryStore.deleteCategoryAction(row.id)
     await refreshTable()
     ElMessage.success('删除成功')
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
-    ElMessage.error(`删除失败：${error?.errMsg}`)
+    ElMessage.error(error?.message || '删除失败')
   }
 }
 

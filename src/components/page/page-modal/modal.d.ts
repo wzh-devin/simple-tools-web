@@ -11,7 +11,14 @@ export interface IModalConfig {
     newTitle: string
     editTitle: string
   }
-  formItems: []
+  formItems: Array<{
+    type: string
+    label: string
+    prop: string
+    placeholder?: string
+    initValue?: any
+    align?: string
+  }>
 }
 
 export interface IModalProps {

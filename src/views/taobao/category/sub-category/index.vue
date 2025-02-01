@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="SubCategoryManage">
 /**
  * 2025/1/19 0:37
  * @author <a href="https://github.com/wzh-devin">devin</a>
@@ -16,6 +16,7 @@ import { storeToRefs } from 'pinia'
 import type { ICategory } from '@/stores/category/i-category'
 import { useRoute } from 'vue-router'
 import modalConfig from '@/views/taobao/category/config/modal.config.ts'
+import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const categoryId = route.query.categoryId as string
@@ -75,8 +76,8 @@ const handleConfirm = async (formData: any) => {
     }
     await refreshTable()
     ElMessage.success('执行成功')
-  } catch (error) {
-    ElMessage.error('操作失败', error?.errMsg)
+  } catch (error: any) {
+    ElMessage.error(error?.message || '操作失败')
   }
 }
 
@@ -88,13 +89,12 @@ const handleEdit = (row: ICategory) => {
 // 处理删除
 const handleDelete = async (row: ICategory) => {
   try {
-    console.log(row.id)
     await categoryStore.deleteCategoryItemAction(row.id)
     await refreshTable()
     ElMessage.success('删除成功')
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
-    ElMessage.error(`删除失败：${error?.errMsg}`)
+    ElMessage.error(error?.message || '删除失败')
   }
 }
 

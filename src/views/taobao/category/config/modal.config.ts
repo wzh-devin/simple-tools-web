@@ -26,7 +26,7 @@ const modalConfig: IModalConfig = {
       label: '类目描述',
       align: 'center'
     }
-  ],
-  options: []
+  ]
 }
+
 export default modalConfig
