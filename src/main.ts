@@ -16,6 +16,9 @@ import pinia from '@/stores'
 // 注册图标
 import icon from '@/global/icon/register-icon.ts'
 
+// 导入 Element Plus 样式
+import 'element-plus/dist/index.css'
+
 const app = createApp(App)
 
 app.use(createPinia())
