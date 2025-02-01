@@ -11,8 +11,15 @@ export interface ITableConfig {
     title: string
     btnTitle: string
   }
-  propList: []
-  tableData: []
+  propList: Array<{
+    type?: string
+    prop: string
+    label: string
+    align?: string
+    fixed?: string
+    haveChild?: boolean
+  }>
+  tableData: any[]
 }
 
 export interface ITableProps {
