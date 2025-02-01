@@ -78,7 +78,7 @@ export async function deleteCategory(id: number) {
 /**
  * 获取二级类目
  */
-export async function getCategoryItems(id: number) {
+export async function getCategoryItems(id: string | number) {
   try {
     return await get({
       url: `/taobao/category/getCategoryItems?id=${id}`
