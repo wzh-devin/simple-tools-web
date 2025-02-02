@@ -10,6 +10,7 @@ import type { IOperationConfig } from '@/components/page/page-operation/opreatio
 const operationConfig: IOperationConfig = {
   pageName: 'categoryOperation',
   searchDtl: {
+    searchData: '',
     placeholder: '请输入类目名称'
   }
 }
