@@ -88,10 +88,10 @@ defineExpose({
           <template v-if="column.type === 'opera'">
             <el-button
               type="success"
-              v-if="column.haveChild"
+              v-if="column.haveChild.isShow"
               link
               @click="handleChildTree(row)"
-              >查看子类目</el-button
+              >{{ column.haveChild?.text }}</el-button
             >
             <el-button type="primary" link @click="handleEdit(row)"
               >编辑

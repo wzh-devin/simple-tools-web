@@ -41,7 +41,9 @@ const tableConfig: ITableConfig = {
       label: '操作',
       align: 'center',
       fixed: 'right',
-      haveChild: false // 子类目不需要"查看子类目"按钮
+      haveChild: {
+        isShow: false
+      }
     }
   ],
   tableData: []
