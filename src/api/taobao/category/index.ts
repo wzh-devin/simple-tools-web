@@ -78,10 +78,15 @@ export async function deleteCategory(id: number) {
 /**
  * 获取二级类目
  */
-export async function getCategoryItems(id: string | number) {
+export async function getCategoryItems(id?: string | number) {
   try {
+    if (id) {
+      return await get({
+        url: `/taobao/category/getCategoryItemsId?id=${id}`
+      })
+    }
     return await get({
-      url: `/taobao/category/getCategoryItems?id=${id}`
+      url: `/taobao/category/getCategoryItems`
     })
   } catch (error) {
     return Promise.reject(error)
