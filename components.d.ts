@@ -24,6 +24,7 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ModalCmp: typeof import('./src/components/page/page-modal/modal-cmp.vue')['default']
+    OperationCmp: typeof import('./src/components/page/page-operation/operation-cmp.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TableCmp: typeof import('./src/components/page/page-table/table-cmp.vue')['default']

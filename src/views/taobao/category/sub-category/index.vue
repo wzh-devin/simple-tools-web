@@ -6,7 +6,6 @@
  * @version 1.0
  * @since 1.0
  */
-import { OperationCmp } from '@/views/taobao/category/module'
 import { computed, onMounted, ref, watch } from 'vue'
 import useCategoryStore from '@/stores/category/category.ts'
 import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
@@ -17,6 +16,7 @@ import type { ICategory } from '@/stores/category/i-category'
 import { useRoute } from 'vue-router'
 import modalConfig from '@/views/taobao/category/config/modal.config.ts'
 import { ElMessage } from 'element-plus'
+import operationConfig from '@/views/taobao/category/sub-category/config/operation.config.ts'
 
 const route = useRoute()
 const categoryId = route.query.categoryId as string
@@ -53,7 +53,6 @@ const modalConfigRef = computed(() => {
 
 // 表格配置
 const tableConfigRef = computed(() => {
-  console.log('categoryItems:', categoryItems.value)
   return {
     ...tableConfig,
     tableData: categoryItems.value || []
@@ -120,7 +119,10 @@ watch(
 <template>
   <div class="sub-category-container">
     <!-- 操作按钮区域 -->
-    <operation-cmp @handle-add="handleAdd" />
+    <operation-cmp
+      :operation-config="operationConfig"
+      @handle-add="handleAdd"
+    />
 
     <!-- 表格区域 -->
     <table-cmp

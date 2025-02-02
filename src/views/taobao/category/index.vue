@@ -6,10 +6,11 @@
  * @version 1.0
  * @since 1.0
  */
-import { OperationCmp } from '@/views/taobao/category/module'
 import { computed, onMounted, ref } from 'vue'
 import useCategoryStore from '@/stores/category/category.ts'
+import operationConfig from '@/views/taobao/category/config/operation.config.ts'
 import modalConfig from '@/views/taobao/category/config/modal.config.ts'
+import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
 import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
@@ -109,7 +110,10 @@ const handleChildTree = (id: number) => {
 <template>
   <div class="category-container">
     <!-- 操作按钮区域 -->
-    <operation-cmp @handle-add="handleAdd" />
+    <operation-cmp
+      :operation-config="operationConfig"
+      @handle-add="handleAdd"
+    />
 
     <!-- 表格区域 -->
     <table-cmp
