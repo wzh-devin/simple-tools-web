@@ -23,6 +23,6 @@ export interface ISelectData {
 export interface ICategoryState {
   categoryList: ICategory[]
   categoryItems: ICategory[]
-  selectedRows: ICategory[],
-  selectData: ISelectData[]
+  selectedRows: ICategory[]
+  selectData?: ISelectData[]
 }

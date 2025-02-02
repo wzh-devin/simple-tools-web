@@ -88,7 +88,7 @@ defineExpose({
           <template v-if="column.type === 'opera'">
             <el-button
               type="success"
-              v-if="column.haveChild.isShow"
+              v-if="column.haveChild?.isShow"
               link
               @click="handleChildTree(row)"
               >{{ column.haveChild?.text }}</el-button

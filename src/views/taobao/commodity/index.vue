@@ -16,6 +16,7 @@ import type OperationCmp from '@/components/page/page-operation/operation-cmp.vu
 import { ElMessage } from 'element-plus'
 import useCommodityStore from '@/stores/commodity/commodity.ts'
 import useCategoryStore from '@/stores/category/category.ts'
+import type { ICommodity } from '@/stores/commodity/i-commodity'
 
 const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
@@ -62,13 +63,13 @@ const handleEdit = async (row: Record<string, any>) => {
 
 const selectDataInit = async () => {
   await categoryStore.getSelectItemsAction()
-  modalRef.value?.setSelectData(categoryStore.selectData)
+  modalRef.value?.setSelectData(categoryStore?.selectData)
 }
 
 // 处理删除
-const handleDelete = async (row: Record<string, any>) => {
+const handleDelete = async (row: ICommodity) => {
   try {
-    await commodityStore.deleteCommodityAction(row.commodityId)
+    await commodityStore.deleteCommodityAction(row?.commodityId)
     await refreshTable()
     ElMessage.success(`删除成功`)
   } catch (error) {
@@ -82,9 +83,8 @@ const handleSelectionChange = (selection: Record<string, any>[]) => {
 }
 
 // 处理确认
-const handleConfirm = async (formData: Record<string, any>) => {
+const handleConfirm = async (formData: ICommodity) => {
   try {
-    console.log(formData)
     if (formData.commodityId) {
       // 执行修改
       await commodityStore.editCommodityAction(formData)

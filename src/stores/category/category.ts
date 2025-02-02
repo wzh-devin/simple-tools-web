@@ -6,7 +6,7 @@
  * @since 1.0
  */
 import { defineStore } from 'pinia'
-import type { ICategoryState } from '@/stores/category/i-category'
+import type { ICategory, ICategoryState } from '@/stores/category/i-category'
 import {
   addCategory,
   addCategoryItem,
@@ -84,7 +84,7 @@ const useCategoryStore = defineStore('category', {
     async getSelectItemsAction() {
       try {
         const categoryListResult = await getCategoryItems()
-        this.selectData = categoryListResult.data.map((category) => {
+        this.selectData = categoryListResult.data.map((category: ICategory) => {
           return {
             label: category.name,
             value: category.id

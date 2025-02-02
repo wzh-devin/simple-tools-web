@@ -6,14 +6,14 @@
  * @since 1.0
  */
 
-// interface categoryItemDto {
-//   categoryItemId: string
-//   categoryId: string
-//   categoryName: string
-//   categoryItemName: string
-//   categoryItemDesc: string
-//   isActive: number
-// }
+interface categoryItemDto {
+  categoryItemId: string
+  categoryId: string
+  categoryName: string
+  categoryItemName: string
+  categoryItemDesc: string
+  isActive: number
+}
 
 export interface ICommodity {
   commodityId?: string
@@ -24,7 +24,7 @@ export interface ICommodity {
   categoryItemId: string
   categoryItemName?: string
   categoryItemDesc?: string
-  // categoryItemDto?: categoryItemDto
+  categoryItemDto?: categoryItemDto
 }
 
 export interface ICommodityState {

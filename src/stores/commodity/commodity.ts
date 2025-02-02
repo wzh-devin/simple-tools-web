@@ -25,14 +25,14 @@ const useCommodityStore = defineStore('commodity', {
     // 获取所有的商品信息
     async getCommodityAllInfoAction() {
       this.commodityList = (await getCommodityAllInfo()).data.map(
-        (commodity) => {
+        (commodity: ICommodity) => {
           const { categoryItemDto, ...rest } = commodity
           return {
             ...rest,
-            categoryName: categoryItemDto.categoryName,
-            categoryItemId: categoryItemDto.categoryItemId,
-            categoryItemName: categoryItemDto.categoryItemName,
-            categoryItemDesc: categoryItemDto.categoryItemDesc
+            categoryName: categoryItemDto?.categoryName,
+            categoryItemId: categoryItemDto?.categoryItemId,
+            categoryItemName: categoryItemDto?.categoryItemName,
+            categoryItemDesc: categoryItemDto?.categoryItemDesc
           }
         }
       )
@@ -54,7 +54,7 @@ const useCommodityStore = defineStore('commodity', {
       }
     },
     // 删除商品
-    async deleteCommodityAction(commodityId: string | number) {
+    async deleteCommodityAction(commodityId: string | number | undefined) {
       try {
         await deleteCommodity(commodityId)
       } catch (error) {

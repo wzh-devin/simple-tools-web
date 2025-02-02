@@ -47,7 +47,7 @@ const setModalVisible = (tag: boolean, itemData?: any) => {
 /**
  * 设置下拉框选项数据
  */
-const setSelectData = (data: Array<{ label: string; value: number }>) => {
+const setSelectData = (data: any) => {
   selectOptions.value = data
 }
 

@@ -7,7 +7,7 @@
  */
 
 import { get, post } from '@/api/http'
-import type ICommodity from '@/stores/commodity/i-commodity'
+import type { ICommodity } from '@/stores/commodity/i-commodity'
 
 const COMMODITY_BASE_API = '/taobao/commodity'
 
@@ -58,7 +58,9 @@ export async function editCommodity(data: ICommodity) {
  * 删除商品信息
  * @param commodityId
  */
-export async function deleteCommodity(commodityId: number | string) {
+export async function deleteCommodity(
+  commodityId: number | string | undefined
+) {
   try {
     await post({
       url: `${COMMODITY_BASE_API}/deleteCommodity?commodityId=${commodityId}`
