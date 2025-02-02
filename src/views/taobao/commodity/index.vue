@@ -79,7 +79,6 @@ const handleDelete = async (row: ICommodity) => {
 
 // TODO 处理选择变化
 const handleSelectionChange = (selection: Record<string, any>[]) => {
-  console.log('选中:', selection)
 }
 
 // 处理确认

@@ -37,7 +37,6 @@ const setModalVisible = (tag: boolean, itemData?: any) => {
   dialogVisible.value = true
   isNew.value = tag
   if (!tag && itemData) {
-    console.log(itemData)
     Object.assign(formData, itemData)
   } else {
     clearFormData()
