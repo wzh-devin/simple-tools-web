@@ -48,7 +48,10 @@ const tableConfig: ITableConfig = {
       label: '操作',
       align: 'center',
       fixed: 'right',
-      haveChild: true
+      haveChild: {
+        text: '查看子类目',
+        isShow: true
+      }
     }
   ],
   tableData: []

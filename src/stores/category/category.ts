@@ -6,7 +6,7 @@
  * @since 1.0
  */
 import { defineStore } from 'pinia'
-import type { ICategoryState } from '@/stores/category/i-category'
+import type { ICategory, ICategoryState } from '@/stores/category/i-category'
 import {
   addCategory,
   addCategoryItem,
@@ -24,7 +24,8 @@ const useCategoryStore = defineStore('category', {
   state: (): ICategoryState => ({
     categoryList: [],
     categoryItems: [],
-    selectedRows: []
+    selectedRows: [],
+    selectData: []
   }),
   actions: {
     // 获取所有类目列表
@@ -77,6 +78,20 @@ const useCategoryStore = defineStore('category', {
         await deleteCategoryItem(id)
       } catch (error) {
         return Promise.reject(error)
+      }
+    },
+    // 获取select列表，用来管理商品列表的下拉框
+    async getSelectItemsAction() {
+      try {
+        const categoryListResult = await getCategoryItems()
+        this.selectData = categoryListResult.data.map((category: ICategory) => {
+          return {
+            label: category.name,
+            value: category.id
+          }
+        })
+      } catch (error) {
+        console.error('获取select列表失败:', error)
       }
     }
   }

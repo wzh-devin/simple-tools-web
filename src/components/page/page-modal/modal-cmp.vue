@@ -19,7 +19,9 @@ const emit = defineEmits(['confirm'])
 const dialogVisible = ref(false)
 const isNew = ref(true)
 const initData: any = {}
+const selectOptions = ref<Array<{ label: string; value: number }>>([])
 
+// 初始化表单数据
 for (const item of props.modalConfig.formItems) {
   initData[item.prop] = item.initValue ?? ''
 }
@@ -35,10 +37,18 @@ const setModalVisible = (tag: boolean, itemData?: any) => {
   dialogVisible.value = true
   isNew.value = tag
   if (!tag && itemData) {
+    console.log(itemData)
     Object.assign(formData, itemData)
   } else {
     clearFormData()
   }
+}
+
+/**
+ * 设置下拉框选项数据
+ */
+const setSelectData = (data: any) => {
+  selectOptions.value = data
 }
 
 /**
@@ -64,7 +74,8 @@ const clearFormData = () => {
 }
 
 defineExpose({
-  setModalVisible
+  setModalVisible,
+  setSelectData
 })
 </script>
 
@@ -96,9 +107,20 @@ defineExpose({
               :placeholder="item.placeholder"
             ></el-input>
           </template>
-          <!-- TODO 下拉框 -->
+          <!-- 下拉框 -->
           <template v-if="item.type === 'select'">
-            <el-select></el-select>
+            <el-select
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || '请选择'"
+              class="w-full"
+            >
+              <el-option
+                v-for="option in selectOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              />
+            </el-select>
           </template>
         </el-form-item>
       </template>
@@ -146,5 +168,9 @@ defineExpose({
 :deep(.el-overlay) {
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(2px);
+}
+
+.w-full {
+  width: 100%;
 }
 </style>

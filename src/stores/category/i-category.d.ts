@@ -15,8 +15,14 @@ export interface ICategory {
   updateTime: string
 }
 
+export interface ISelectData {
+  label: string
+  value: number | string
+}
+
 export interface ICategoryState {
   categoryList: ICategory[]
   categoryItems: ICategory[]
   selectedRows: ICategory[]
+  selectData?: ISelectData[]
 }

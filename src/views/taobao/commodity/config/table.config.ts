@@ -3,36 +3,34 @@ import type { ITableConfig } from '@/components/page/page-table/table'
 const tableConfig: ITableConfig = {
   pageName: 'table',
   pageHeader: {
-    title: '子类目列表',
-    btnTitle: '新增子类目'
+    title: '商品列表',
+    btnTitle: '新增商品'
   },
   propList: [
     {
-      prop: 'name',
-      label: '子类目名称',
+      prop: 'commodityName',
+      label: '商品名称',
       align: 'center'
     },
     {
-      prop: 'description',
-      label: '子类目描述',
+      prop: 'commodityDesc',
+      label: '商品描述',
+      align: 'center'
+    },
+    {
+      prop: 'categoryName',
+      label: '服务类型',
+      align: 'center'
+    },
+    {
+      prop: 'categoryItemName',
+      label: '所属类目',
       align: 'center'
     },
     {
       type: 'boolean',
       prop: 'isActive',
-      label: '是否激活',
-      align: 'center'
-    },
-    {
-      type: 'timer',
-      prop: 'createTime',
-      label: '创建时间',
-      align: 'center'
-    },
-    {
-      type: 'timer',
-      prop: 'updateTime',
-      label: '更新时间',
+      label: '是否上架',
       align: 'center'
     },
     {
@@ -42,7 +40,8 @@ const tableConfig: ITableConfig = {
       align: 'center',
       fixed: 'right',
       haveChild: {
-        isShow: false
+        text: '查看链接',
+        isShow: true
       }
     }
   ],

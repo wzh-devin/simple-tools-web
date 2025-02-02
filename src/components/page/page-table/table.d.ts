@@ -17,7 +17,10 @@ export interface ITableConfig {
     label: string
     align?: string
     fixed?: string
-    haveChild?: boolean
+    haveChild?: {
+      text?: string
+      isShow: boolean
+    }
   }>
   tableData: any[]
 }
