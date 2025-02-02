@@ -72,7 +72,6 @@ const handleConfirm = async (formData: any) => {
 
 // 处理编辑
 const handleEdit = (row: ICategory) => {
-  console.log(row)
   modalRef.value?.setModalVisible(false, row) // 传递完整数据到弹窗
 }
 
@@ -83,7 +82,6 @@ const handleDelete = async (row: ICategory) => {
     await refreshTable()
     ElMessage.success('删除成功')
   } catch (error: any) {
-    console.log(error)
     ElMessage.error(error?.message || '删除失败')
   }
 }
