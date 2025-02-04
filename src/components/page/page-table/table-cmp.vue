@@ -6,7 +6,6 @@
  * @version 1.0
  * @since 1.0
  */
-import type { ICategory } from '@/stores/category/i-category'
 import { computed, defineProps, ref } from 'vue'
 import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
@@ -25,18 +24,18 @@ const handleSelectionChange = (selection: any[]) => {
 }
 
 // 处理编辑
-const handleEdit = (row: ICategory) => {
+const handleEdit = (row: any) => {
   emit('edit', { ...row }) // 传递完整的行数据，包括 id
 }
 
 // 处理删除
-const handleDelete = (row: ICategory) => {
+const handleDelete = (row: any) => {
   emit('delete', { ...row }) // 传递完整的行数据，包括 id
 }
 
 // 执行跳转页面
-const handleChildTree = (row: ICategory) => {
-  emit('handleChildTree', row.id)
+const handleChildTree = (row: any) => {
+  emit('handleChildTree', row)
 }
 
 defineExpose({
@@ -83,7 +82,7 @@ defineExpose({
             </el-button>
           </template>
           <template v-if="column.type === 'timer'">
-            {{ dateFormat(row[column.prop as keyof ICategory]) }}
+            {{ dateFormat(row[column.prop]) }}
           </template>
           <template v-if="column.type === 'opera'">
             <el-button

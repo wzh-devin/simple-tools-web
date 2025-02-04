@@ -95,11 +95,11 @@ const handleSelectionChange = (selection: ICategory[]) => {
 }
 
 // 跳转子节点
-const handleChildTree = (id: number) => {
+const handleChildTree = (row: ICategory) => {
   router.push({
     path: '/taobao/category/sub-category',
     query: {
-      categoryId: id.toString()
+      categoryId: row.id?.toString()
     }
   })
 }

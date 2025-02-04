@@ -27,6 +27,18 @@ export interface ICommodity {
   categoryItemDto?: categoryItemDto
 }
 
+export interface ICommodityLink {
+  id: string
+  commodityId: string
+  link: string
+  operSys: string
+  description: string
+  isActive: string
+  createTime: string
+  updateTime: string
+}
+
 export interface ICommodityState {
   commodityList: ICommodity[]
+  commodityLinkList: ICommodityLink[]
 }
