@@ -19,7 +19,7 @@ import type { ICommodityLink } from '@/stores/commodity/i-commodity'
 import useCommodityStore from '@/stores/commodity/commodity.ts'
 
 const route = useRoute()
-const commodityId = route.query.commodityId
+const commodityId = route.query.commodityId?.toString()
 const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 const commodityStore = useCommodityStore()

@@ -17,6 +17,7 @@ import { ElMessage } from 'element-plus'
 import useCommodityStore from '@/stores/commodity/commodity.ts'
 import type { ICommodity } from '@/stores/commodity/i-commodity'
 import { useRouter } from 'vue-router'
+import useCategoryStore from '@/stores/category/category.ts'
 
 const router = useRouter()
 
@@ -24,6 +25,7 @@ const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
 
 const commodityStore = useCommodityStore()
+const categoryStore = useCategoryStore()
 
 onMounted(() => {
   refreshTable()
