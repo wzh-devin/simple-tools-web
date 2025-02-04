@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
- * 2025/2/2 15:30
+ * 2025/2/3 15:30
  * @author <a href="https://github.com/wzh-devin">devin</a>
- * @description 商品管理
+ * @description 链接管理
  * @version 1.0
  * @since 1.0
  */
@@ -14,33 +14,30 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
 import { ElMessage } from 'element-plus'
+import { useRoute } from 'vue-router'
+import type { ICommodityLink } from '@/stores/commodity/i-commodity'
 import useCommodityStore from '@/stores/commodity/commodity.ts'
-import type { ICommodity } from '@/stores/commodity/i-commodity'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
+const route = useRoute()
+const commodityId = route.query.commodityId
 const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
-
 const commodityStore = useCommodityStore()
 
 onMounted(() => {
   refreshTable()
 })
 
-/**
- * 刷新表格
- */
 const refreshTable = async () => {
-  await commodityStore.getCommodityAllInfoAction()
+  // 获取数据
+  await commodityStore.getCommodityLinksAction(commodityId)
 }
 
 // 表格配置
 const tableConfigRef = computed(() => {
   return {
     ...tableConfig,
-    tableData: commodityStore.commodityList
+    tableData: commodityStore.commodityLinkList
   }
 })
 
@@ -51,45 +48,59 @@ const modalConfigRef = computed(() => {
 /**
  * 执行新增
  */
-const handleAdd = async () => {
+const handleAdd = () => {
   modalRef.value?.setModalVisible(true)
-  await selectDataInit()
+  modalRef.value?.setSelectData(selectInit())
 }
 
 // 处理编辑
-const handleEdit = async (row: Record<string, any>) => {
+const handleEdit = (row: ICommodityLink) => {
   modalRef.value?.setModalVisible(false, row)
-  await selectDataInit()
+  modalRef.value?.setSelectData(selectInit())
 }
 
-const selectDataInit = async () => {
-  await categoryStore.getSelectItemsAction()
-  modalRef.value?.setSelectData(categoryStore?.selectData)
+const selectInit = () => {
+  return [
+    {
+      label: 'Windows',
+      value: 'WINDOWS'
+    },
+    {
+      label: 'Mac',
+      value: 'MAC'
+    },
+    {
+      label: 'Linux',
+      value: 'LINUX'
+    }
+  ]
 }
 
 // 处理删除
-const handleDelete = async (row: ICommodity) => {
+const handleDelete = async (row: ICommodityLink) => {
   try {
-    await commodityStore.deleteCommodityAction(row?.commodityId)
+    await commodityStore.deleteCommodityLinksAction([row.id])
     await refreshTable()
-    ElMessage.success(`删除成功`)
-  } catch (error) {
-    ElMessage.error(`删除失败：${error}`)
+    ElMessage.success('删除成功')
+  } catch (e) {
+    ElMessage.error('删除失败')
   }
 }
 
-// TODO 处理选择变化
+// 处理选择变化
 const handleSelectionChange = (selection: Record<string, any>[]) => {}
 
 // 处理确认
-const handleConfirm = async (formData: ICommodity) => {
+const handleConfirm = async (formData: ICommodityLink) => {
   try {
-    if (formData.commodityId) {
-      // 执行修改
-      await commodityStore.editCommodityAction(formData)
+    console.log(formData)
+    if (formData.id) {
+      await commodityStore.editCommodityLinkAction(formData)
     } else {
-      // 执行新增
-      await commodityStore.addCommodityAction(formData)
+      await commodityStore.addCommodityLinkAction({
+        ...formData,
+        commodityId
+      })
     }
     await refreshTable()
     ElMessage.success('操作成功')
@@ -97,20 +108,10 @@ const handleConfirm = async (formData: ICommodity) => {
     ElMessage.error('操作失败')
   }
 }
-
-// 跳转到链接管理
-const handleChildTree = (row: ICommodity) => {
-  router.push({
-    path: '/taobao/commodity/link',
-    query: {
-      commodityId: row.commodityId?.toString()
-    }
-  })
-}
 </script>
 
 <template>
-  <div class="commodity-container">
+  <div class="link-container">
     <!-- 操作按钮区域 -->
     <operation-cmp
       :operation-config="operationConfig"
@@ -124,7 +125,6 @@ const handleChildTree = (row: ICommodity) => {
       @edit="handleEdit"
       @delete="handleDelete"
       @selection-change="handleSelectionChange"
-      @handleChildTree="handleChildTree"
     />
 
     <!-- 弹窗组件 -->
@@ -137,7 +137,7 @@ const handleChildTree = (row: ICommodity) => {
 </template>
 
 <style scoped lang="less">
-.commodity-container {
+.link-container {
   :deep(.el-table) {
     margin-top: 4px;
     border-radius: 8px;

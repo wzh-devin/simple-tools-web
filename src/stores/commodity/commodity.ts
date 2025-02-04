@@ -8,18 +8,22 @@
 import { defineStore } from 'pinia'
 import type {
   ICommodity,
+  ICommodityLink,
   ICommodityState
 } from '@/stores/commodity/i-commodity'
 import {
   addCommodity,
-  deleteCommodity,
-  editCommodity,
-  getCommodityAllInfo
+  addCommodityLink,
+  deleteCommodity, deleteCommodityLinks,
+  editCommodity, editCommodityLink,
+  getCommodityAllInfo,
+  getCommodityLinks
 } from '@/api/taobao/commodity'
 
 const useCommodityStore = defineStore('commodity', {
   state: (): ICommodityState => ({
-    commodityList: []
+    commodityList: [],
+    commodityLinkList: []
   }),
   actions: {
     // 获取所有的商品信息
@@ -57,6 +61,39 @@ const useCommodityStore = defineStore('commodity', {
     async deleteCommodityAction(commodityId: string | number | undefined) {
       try {
         await deleteCommodity(commodityId)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    // 获取商品链接信息
+    async getCommodityLinksAction(commodityId: string | undefined) {
+      try {
+        const commodityLinksResult = await getCommodityLinks(commodityId)
+        this.commodityLinkList = commodityLinksResult.data
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    // 新增商品链接
+    async addCommodityLinkAction(data: ICommodityLink) {
+      try {
+        await addCommodityLink(data)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    // 修改商品链接
+    async editCommodityLinkAction(data: ICommodityLink) {
+      try {
+        await editCommodityLink(data)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    // 删除商品链接
+    async deleteCommodityLinksAction(linkIds: string[]) {
+      try {
+        await deleteCommodityLinks(linkIds)
       } catch (error) {
         return Promise.reject(error)
       }

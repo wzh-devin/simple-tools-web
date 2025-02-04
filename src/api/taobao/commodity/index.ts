@@ -7,7 +7,7 @@
  */
 
 import { get, post } from '@/api/http'
-import type { ICommodity } from '@/stores/commodity/i-commodity'
+import type { ICommodity, ICommodityLink } from '@/stores/commodity/i-commodity'
 
 const COMMODITY_BASE_API = '/taobao/commodity'
 
@@ -64,6 +64,61 @@ export async function deleteCommodity(
   try {
     await post({
       url: `${COMMODITY_BASE_API}/deleteCommodity?commodityId=${commodityId}`
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 获取商品链接
+ * @param commodityId
+ */
+export async function getCommodityLinks(commodityId: string | undefined) {
+  try {
+    return get({
+      url: `${COMMODITY_BASE_API}/getLinks?commodityId=${commodityId}`
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 新增商品链接
+ * @param data
+ */
+export async function addCommodityLink(data: ICommodityLink) {
+  try {
+    await post({
+      url: `${COMMODITY_BASE_API}/addLink`,
+      data
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+export async function editCommodityLink(data: ICommodityLink) {
+  try {
+    await post({
+      url: `${COMMODITY_BASE_API}/editLink`,
+      data
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+/**
+ * 删除商品链接
+ * @param linkIds
+ */
+export async function deleteCommodityLinks(linkIds: any[]) {
+  try {
+    await post({
+      url: `${COMMODITY_BASE_API}/deleteLinks`,
+      data: linkIds
     })
   } catch (error) {
     return Promise.reject(error)

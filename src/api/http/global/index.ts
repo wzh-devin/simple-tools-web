@@ -10,7 +10,10 @@ import { BASE_URL, TIME_OUT } from '../config'
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: TIME_OUT
+  timeout: TIME_OUT,
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
 })
 
 // 请求拦截器

@@ -34,6 +34,9 @@ const breadcrumbs = computed(() => {
       case 'commodity':
         title = '商品管理'
         break
+      case 'link':
+        title = '商品链接管理'
+        break
       default:
         title = path
     }
@@ -67,8 +70,8 @@ const breadcrumbs = computed(() => {
           <div class="header-right">
             <h2>淘宝工作台</h2>
             <el-tag size="small" type="info" effect="plain"
-              >商家经营助手</el-tag
-            >
+              >商家经营助手
+            </el-tag>
           </div>
         </div>
       </template>
