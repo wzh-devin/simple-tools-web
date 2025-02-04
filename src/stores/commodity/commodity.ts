@@ -58,7 +58,7 @@ const useCommodityStore = defineStore('commodity', {
       }
     },
     // 删除商品
-    async deleteCommodityAction(commodityId: string | number | undefined) {
+    async deleteCommodityAction(commodityId: string | undefined) {
       try {
         await deleteCommodity(commodityId)
       } catch (error) {

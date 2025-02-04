@@ -29,7 +29,7 @@ export interface ICommodity {
 
 export interface ICommodityLink {
   id: string
-  commodityId: string
+  commodityId: string | undefined
   link: string
   operSys: string
   description: string
