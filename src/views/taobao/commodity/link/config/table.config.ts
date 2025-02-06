@@ -8,6 +8,7 @@ const tableConfig: ITableConfig = {
   },
   propList: [
     {
+      type: 'link',
       prop: 'link',
       label: '商品链接',
       align: 'center'

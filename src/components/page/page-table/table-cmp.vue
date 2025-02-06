@@ -9,14 +9,22 @@
 import { computed, defineProps, ref } from 'vue'
 import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
+import TextCopy from '@/components/page/common/text-copy/text-copy.vue'
 
 const props = defineProps<ITableProps>()
-const emit = defineEmits(['edit', 'delete', 'selection-change', 'handleChildTree'])
+const emit = defineEmits([
+  'edit',
+  'delete',
+  'selection-change',
+  'handleChildTree'
+])
 
 // 使用计算属性来保持响应式
 const tableData = computed(() => props.tableConfig.tableData)
 
 const loading = ref<boolean>(false)
+
+const textCopyRef = ref<InstanceType<typeof TextCopy>>()
 
 // 处理多选变化
 const handleSelectionChange = (selection: any[]) => {
@@ -38,8 +46,28 @@ const handleChildTree = (row: any) => {
   emit('handleChildTree', row)
 }
 
+const copyData = (
+  data: string | any | undefined,
+  type: DataType = DataType.TEXT
+) => {
+  if (DataType.TEXT === type) {
+    textCopyRef.value?.textCopy(data)
+  } else {
+    textCopyRef.value?.objCopy(data)
+  }
+}
+
+const readData = (type: DataType = DataType.TEXT) => {
+  if (DataType.OBJ === type) {
+    return textCopyRef.value?.objRead()
+  }
+  return textCopyRef.value?.textRead()
+}
+
 defineExpose({
-  loading
+  loading,
+  copyData,
+  readData
 })
 </script>
 
@@ -72,6 +100,12 @@ defineExpose({
         :align="column?.align"
       >
         <template #default="{ row }">
+          <template v-if="column.type === 'link'">
+            <el-link type="primary" :href="row[column.prop]" target="_blank"
+              >跳转
+            </el-link>
+            <text-copy ref="textCopyRef" :text="`${row[column.prop]}`" />
+          </template>
           <template v-if="column.type === 'boolean'">
             <el-button
               :type="row.isActive === 1 ? 'success' : 'danger'"
@@ -90,8 +124,8 @@ defineExpose({
               v-if="column.haveChild?.isShow"
               link
               @click="handleChildTree(row)"
-              >{{ column.haveChild?.text }}</el-button
-            >
+              >{{ column.haveChild?.text }}
+            </el-button>
             <el-button type="primary" link @click="handleEdit(row)"
               >编辑
             </el-button>
