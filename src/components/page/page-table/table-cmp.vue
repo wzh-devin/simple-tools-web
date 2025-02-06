@@ -9,14 +9,23 @@
 import { computed, defineProps, ref } from 'vue'
 import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
+import TextCopy from '@/components/page/common/text-copy/text-copy.vue'
+import { CopyDocument } from '@element-plus/icons-vue'
 
 const props = defineProps<ITableProps>()
-const emit = defineEmits(['edit', 'delete', 'selection-change', 'handleChildTree'])
+const emit = defineEmits([
+  'edit',
+  'delete',
+  'selection-change',
+  'handleChildTree'
+])
 
 // 使用计算属性来保持响应式
 const tableData = computed(() => props.tableConfig.tableData)
 
 const loading = ref<boolean>(false)
+
+const textCopyRef = ref<InstanceType<typeof TextCopy>>()
 
 // 处理多选变化
 const handleSelectionChange = (selection: any[]) => {
@@ -36,6 +45,11 @@ const handleDelete = (row: any) => {
 // 执行跳转页面
 const handleChildTree = (row: any) => {
   emit('handleChildTree', row)
+}
+
+// 复制文本
+const textCopy = (text: string | undefined) => {
+  navigator.clipboard.writeText(text)
 }
 
 defineExpose({
@@ -72,6 +86,16 @@ defineExpose({
         :align="column?.align"
       >
         <template #default="{ row }">
+          <template v-if="column.type === 'link'">
+            <el-link type="primary" :href="row[column.prop]" target="_blank"
+              >跳转
+            </el-link>
+            <el-button link @click="textCopy(row[column.prop])">
+              <el-icon>
+                <CopyDocument />
+              </el-icon>
+            </el-button>
+          </template>
           <template v-if="column.type === 'boolean'">
             <el-button
               :type="row.isActive === 1 ? 'success' : 'danger'"
@@ -90,8 +114,8 @@ defineExpose({
               v-if="column.haveChild?.isShow"
               link
               @click="handleChildTree(row)"
-              >{{ column.haveChild?.text }}</el-button
-            >
+              >{{ column.haveChild?.text }}
+            </el-button>
             <el-button type="primary" link @click="handleEdit(row)"
               >编辑
             </el-button>
