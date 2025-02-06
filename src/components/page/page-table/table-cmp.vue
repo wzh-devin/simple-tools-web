@@ -9,7 +9,6 @@
 import { computed, defineProps, ref } from 'vue'
 import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
-import TextCopy from '@/components/page/common/text-copy/text-copy.vue'
 import { CopyDocument } from '@element-plus/icons-vue'
 
 const props = defineProps<ITableProps>()
@@ -24,8 +23,6 @@ const emit = defineEmits([
 const tableData = computed(() => props.tableConfig.tableData)
 
 const loading = ref<boolean>(false)
-
-const textCopyRef = ref<InstanceType<typeof TextCopy>>()
 
 // 处理多选变化
 const handleSelectionChange = (selection: any[]) => {
@@ -48,7 +45,7 @@ const handleChildTree = (row: any) => {
 }
 
 // 复制文本
-const textCopy = (text: string | undefined) => {
+const textCopy = (text: string) => {
   navigator.clipboard.writeText(text)
 }
 
