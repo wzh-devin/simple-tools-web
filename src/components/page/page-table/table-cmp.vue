@@ -10,6 +10,7 @@ import { computed, defineProps, ref } from 'vue'
 import type { ITableProps } from '@/components/page/page-table/table'
 import { dateFormat } from '@/utils/format.ts'
 import TextCopy from '@/components/page/common/text-copy/text-copy.vue'
+import { CopyDocument } from '@element-plus/icons-vue'
 
 const props = defineProps<ITableProps>()
 const emit = defineEmits([
@@ -46,28 +47,13 @@ const handleChildTree = (row: any) => {
   emit('handleChildTree', row)
 }
 
-const copyData = (
-  data: string | any | undefined,
-  type: DataType = DataType.TEXT
-) => {
-  if (DataType.TEXT === type) {
-    textCopyRef.value?.textCopy(data)
-  } else {
-    textCopyRef.value?.objCopy(data)
-  }
-}
-
-const readData = (type: DataType = DataType.TEXT) => {
-  if (DataType.OBJ === type) {
-    return textCopyRef.value?.objRead()
-  }
-  return textCopyRef.value?.textRead()
+// 复制文本
+const textCopy = (text: string | undefined) => {
+  navigator.clipboard.writeText(text)
 }
 
 defineExpose({
-  loading,
-  copyData,
-  readData
+  loading
 })
 </script>
 
@@ -104,7 +90,11 @@ defineExpose({
             <el-link type="primary" :href="row[column.prop]" target="_blank"
               >跳转
             </el-link>
-            <text-copy ref="textCopyRef" :text="`${row[column.prop]}`" />
+            <el-button link @click="textCopy(row[column.prop])">
+              <el-icon>
+                <CopyDocument />
+              </el-icon>
+            </el-button>
           </template>
           <template v-if="column.type === 'boolean'">
             <el-button
