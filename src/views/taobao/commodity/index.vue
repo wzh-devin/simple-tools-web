@@ -14,10 +14,10 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
 import { ElMessage } from 'element-plus'
-import useCommodityStore from '@/stores/commodity/commodity.ts'
-import type { ICommodity } from '@/stores/commodity/i-commodity'
+import useCommodityStore from '@/stores/taobao/commodity/commodity.ts'
+import type { ICommodity } from '@/stores/taobao/commodity/i-commodity'
 import { useRouter } from 'vue-router'
-import useCategoryStore from '@/stores/category/category.ts'
+import useCategoryStore from '@/stores/taobao/category/category.ts'
 
 const router = useRouter()
 
