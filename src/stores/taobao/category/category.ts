@@ -6,7 +6,10 @@
  * @since 1.0
  */
 import { defineStore } from 'pinia'
-import type { ICategory, ICategoryState } from '@/stores/category/i-category'
+import type {
+  ICategory,
+  ICategoryState
+} from '@/stores/taobao/category/i-category'
 import {
   addCategory,
   addCategoryItem,

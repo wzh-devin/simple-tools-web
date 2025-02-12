@@ -7,7 +7,7 @@
  */
 
 import { get, post } from '@/api/http'
-import type { ICommodity, ICommodityLink } from '@/stores/commodity/i-commodity'
+import type { ICommodity, ICommodityLink } from '@/stores/taobao/commodity/i-commodity'
 
 const COMMODITY_BASE_API = '/taobao/commodity'
 

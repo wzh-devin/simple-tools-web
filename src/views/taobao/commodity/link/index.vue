@@ -15,8 +15,8 @@ import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router'
-import type { ICommodityLink } from '@/stores/commodity/i-commodity'
-import useCommodityStore from '@/stores/commodity/commodity.ts'
+import type { ICommodityLink } from '@/stores/taobao/commodity/i-commodity'
+import useCommodityStore from '@/stores/taobao/commodity/commodity.ts'
 
 const route = useRoute()
 const commodityId = route.query.commodityId?.toString()

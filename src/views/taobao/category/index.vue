@@ -7,7 +7,7 @@
  * @since 1.0
  */
 import { computed, onMounted, ref } from 'vue'
-import useCategoryStore from '@/stores/category/category.ts'
+import useCategoryStore from '@/stores/taobao/category/category.ts'
 import operationConfig from '@/views/taobao/category/config/operation.config.ts'
 import modalConfig from '@/views/taobao/category/config/modal.config.ts'
 import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
@@ -15,7 +15,7 @@ import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
 import type TableCmp from '@/components/page/page-table/table-cmp.vue'
 import tableConfig from '@/views/taobao/category/config/table.config.ts'
 import { storeToRefs } from 'pinia'
-import type { ICategory } from '@/stores/category/i-category'
+import type { ICategory } from '@/stores/taobao/category/i-category'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
