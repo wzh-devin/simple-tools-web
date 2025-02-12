@@ -11,7 +11,7 @@ import './assets/css/index.less'
 import router from './router'
 
 // 导入pinia
-const pinia = createPinia()
+import pinia from '@/stores'
 
 // 注册图标
 import icon from '@/global/icon/register-icon.ts'
@@ -21,8 +21,9 @@ import 'element-plus/dist/index.css'
 
 const app = createApp(App)
 
-app.use(pinia)
+app.use(createPinia())
 app.use(router)
+app.use(pinia)
 app.use(icon)
 
 app.mount('#app')
