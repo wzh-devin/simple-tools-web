@@ -10,7 +10,7 @@ import type {
   ICommodity,
   ICommodityLink,
   ICommodityState
-} from '@/stores/commodity/i-commodity'
+} from '@/stores/taobao/commodity/i-commodity'
 import {
   addCommodity,
   addCommodityLink,

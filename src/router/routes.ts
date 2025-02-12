@@ -11,11 +11,16 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'root',
-    redirect: '/main'
+    redirect: '/login'
   },
   {
     path: '/:pathMatch(.*)',
     component: () => import('@/views/not-found/NotFound.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/index.vue')
   },
   {
     path: '/main',

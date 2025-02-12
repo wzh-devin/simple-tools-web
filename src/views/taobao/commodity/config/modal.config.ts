@@ -1,5 +1,5 @@
 import type { IModalConfig } from '@/components/page/page-modal/modal'
-import useCategoryStore from '@/stores/category/category.ts'
+import useCategoryStore from '@/stores/taobao/category/category.ts'
 
 const categoryStore = useCategoryStore()
 
