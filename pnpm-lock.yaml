@@ -48,6 +48,9 @@ importers:
       '@types/node':
         specifier: ^22.10.7
         version: 22.10.7
+      '@types/qrcode':
+        specifier: ^1.5.5
+        version: 1.5.5
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
         version: 5.2.1(vite@6.0.7(@types/node@22.10.7)(less@4.2.1)(stylus@0.64.0))(vue@3.5.13(typescript@5.6.3))
@@ -647,6 +650,9 @@ packages:
 
   '@types/node@22.10.7':
     resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==, tarball: https://registry.npmmirror.com/@types/node/-/node-22.10.7.tgz}
+
+  '@types/qrcode@1.5.5':
+    resolution: {integrity: sha512-CdfBi/e3Qk+3Z/fXYShipBT13OJ2fDO2Q2w5CIP5anLTLIndQG9z6P1cnm+8zCWSpm5dnxMFd/uREtb0EXuQzg==, tarball: https://registry.npmmirror.com/@types/qrcode/-/qrcode-1.5.5.tgz}
 
   '@types/web-bluetooth@0.0.16':
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz}
@@ -2590,6 +2596,10 @@ snapshots:
   '@types/node@22.10.7':
     dependencies:
       undici-types: 6.20.0
+
+  '@types/qrcode@1.5.5':
+    dependencies:
+      '@types/node': 22.10.7
 
   '@types/web-bluetooth@0.0.16': {}
 

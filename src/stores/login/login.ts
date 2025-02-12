@@ -35,15 +35,14 @@ const useLoginStore = defineStore('login', {
     async getQrCodeAction() {
       try {
         const result = await getWxQr()
-        // 使用 QRCode 生成二维码
-        QRCode.toDataURL(result.data?.loginUrl, {
+        this.qrCode = await QRCode.toDataURL(result.data?.loginUrl, {
           width: 160,
           margin: 1,
           color: {
             dark: '#000000',
             light: '#ffffff'
           }
-        }).then((res) => (this.qrCode = res))
+        })
       } catch (err) {
         console.error('二维码生成失败:', err)
       }

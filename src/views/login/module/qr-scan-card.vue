@@ -2,6 +2,10 @@
 import useLoginStore from '@/stores/login/login.ts'
 
 const loginStore = useLoginStore()
+
+const handleClick = () => {
+  loginStore.getQrCodeAction()
+}
 </script>
 
 <template>
