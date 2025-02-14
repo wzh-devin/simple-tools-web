@@ -11,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'root',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/:pathMatch(.*)',

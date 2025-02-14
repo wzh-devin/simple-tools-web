@@ -1,20 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import AccountCard from './account-card.vue'
 import QrScanCard from '@/views/login/module/qr-scan-card.vue'
-import useLoginStore from '@/stores/login/login.ts'
+import { WX_SCAN } from '@/global/constant'
 
 const activeTab = ref('account')
-
-const loginStore = useLoginStore()
-
-// 监听标签页变化
-watch(activeTab, (newVal) => {
-  if (newVal === 'wechat') {
-    // 执行加载获取二维码
-    loginStore.getQrCodeAction()
-  }
-})
 </script>
 
 <template>
@@ -24,8 +14,8 @@ watch(activeTab, (newVal) => {
         <account-card />
       </el-tab-pane>
 
-      <el-tab-pane label="微信登录" name="wechat">
-        <qr-scan-card />
+      <el-tab-pane label="微信登录" name="wx_scan">
+        <qr-scan-card :active="activeTab === WX_SCAN" />
       </el-tab-pane>
     </el-tabs>
   </el-card>

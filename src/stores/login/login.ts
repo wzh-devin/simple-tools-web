@@ -6,10 +6,11 @@
  * @since 1.0
  */
 import { defineStore } from 'pinia'
-import { accountLogin, getWxQr } from '@/api/login'
+import { accountLogin } from '@/api/login'
 import QRCode from 'qrcode'
 
 interface LoginState {
+  token: string
   qrCode: string
 }
 
@@ -20,6 +21,7 @@ interface IAccount {
 
 const useLoginStore = defineStore('login', {
   state: (): LoginState => ({
+    token: '',
     qrCode: ''
   }),
   actions: {
@@ -32,10 +34,9 @@ const useLoginStore = defineStore('login', {
       }
     },
     // 获取微信二维码
-    async getQrCodeAction() {
+    async getQrCodeAction(data: string) {
       try {
-        const result = await getWxQr()
-        this.qrCode = await QRCode.toDataURL(result.data?.loginUrl, {
+        this.qrCode = await QRCode.toDataURL(data?.loginUrl, {
           width: 160,
           margin: 1,
           color: {

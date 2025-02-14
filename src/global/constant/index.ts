@@ -5,3 +5,6 @@
  * @version 1.0
  * @since 1.0
  */
+export const TOKEN: string = 'token'
+
+export const WX_SCAN: string = 'wx_scan'
