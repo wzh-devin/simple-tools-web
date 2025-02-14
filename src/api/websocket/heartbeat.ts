@@ -4,7 +4,7 @@ export class HeartbeatMonitor {
   private wsManager: any
   private intervalId: NodeJS.Timeout | null = null
   private timeout: NodeJS.Timeout | null = null
-  private interval = 30000 // TODO 心跳间隔30秒
+  private interval = 3000 // TODO 心跳间隔30秒
   private timeoutDuration = 5000 // 超时时间5秒
 
   constructor(wsManager: any) {

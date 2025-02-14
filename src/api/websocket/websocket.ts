@@ -1,4 +1,6 @@
 import { HeartbeatMonitor } from './heartbeat.ts'
+import { ElMessage } from 'element-plus'
+import { TOKEN } from '@/global/constant'
 
 interface IType {
   type: number
@@ -107,6 +109,13 @@ export class WebSocketManager {
       // 处理心跳响应
       if (message.type == this.type.pong) {
         this.heartbeat.handlePong()
+      } else if (message.type === 'token_pong_fail') {
+        // token失效，清除token并跳转到登录页
+        localStorage.removeItem(TOKEN)
+        this.disconnect()
+        ElMessage.error('登录已过期，请重新登录')
+        window.location.href = '/#/login'
+        return
       }
 
       // 如果有回调函数，调用它
