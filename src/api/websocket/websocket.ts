@@ -103,17 +103,17 @@ export class WebSocketManager {
   private handleMessage(data: any): any {
     try {
       const message = JSON.parse(data)
-      
+
       // 处理心跳响应
       if (message.type == this.type.pong) {
         this.heartbeat.handlePong()
       }
-      
+
       // 如果有回调函数，调用它
       if (this.messageCallback) {
         this.messageCallback(message)
       }
-      
+
       return message
     } catch (error) {
       console.error('消息解析错误:', error)
@@ -141,9 +141,26 @@ export class WebSocketManager {
   // 关闭连接
   disconnect(): void {
     if (this.ws) {
+      // 先停止心跳检测
       this.heartbeat.stop()
+      
+      // 清除所有回调
+      this.messageCallback = null
+      this.connectResolve = null
+      this.connectReject = null
+      
+      // 重置重连次数
+      this.reconnectAttempts = 0
+      
+      // 关闭连接
+      this.ws.onclose = null  // 移除onclose回调，防止触发重连
       this.ws.close()
       this.ws = null
     }
+  }
+
+  // 检查连接状态
+  isConnected(): boolean {
+    return this.ws !== null && this.ws.readyState === WebSocket.OPEN
   }
 }

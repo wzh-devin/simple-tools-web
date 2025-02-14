@@ -44,6 +44,7 @@ const initWebSocket = async () => {
         break
       }
       case WsType.LOGIN.type: {
+        console.log('登录成功，连接已建立')
         // 保存token到本地缓存
         localStorage.setItem(TOKEN, message.data)
         // 关闭WebSocket连接

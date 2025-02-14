@@ -6,11 +6,63 @@
  * @version 1.0
  * @since 1.0
  */
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, onUnmounted } from 'vue'
 import { MainCard } from '@/views/main/module'
+import { WebSocketManager } from '@/api/websocket/websocket'
+import { WsType } from '@/global/enums/ws-type'
+import { TOKEN } from '@/global/constant'
 
 defineComponent({
   name: 'Main'
+})
+
+let ws: WebSocketManager | null = null
+
+// 初始化WebSocket连接
+const initWebSocket = async () => {
+  // 如果已经存在连接，先断开
+  if (ws) {
+    ws.disconnect()
+  }
+
+  // 创建新的WebSocket连接
+  ws = new WebSocketManager(
+    `${import.meta.env.VITE_APP_WS_URL}/wx/${WsType.LOGIN.type}`,
+    WsType.LOGIN
+  )
+
+  // 处理WebSocket消息
+  ws.onMessage(async (message) => {
+    console.log('收到消息:', message)
+    switch (message.type) {
+      case WsType.LOGIN.type: {
+        console.log('登录成功，连接已建立')
+        break
+      }
+      default:
+        console.log('未处理的消息类型:', message.type)
+        break
+    }
+  })
+
+  try {
+    await ws.connect()
+  } catch (error) {
+    console.error('WebSocket连接失败:', error)
+  }
+}
+
+// 组件挂载时建立连接
+onMounted(() => {
+  initWebSocket()
+})
+
+// 组件卸载时断开连接
+onUnmounted(() => {
+  if (ws) {
+    ws.disconnect()
+    ws = null
+  }
 })
 </script>
 

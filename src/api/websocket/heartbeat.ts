@@ -4,7 +4,7 @@ export class HeartbeatMonitor {
   private wsManager: any
   private intervalId: NodeJS.Timeout | null = null
   private timeout: NodeJS.Timeout | null = null
-  private interval = 3000 // TODO 心跳间隔30秒
+  private interval = 30000 // TODO 心跳间隔30秒
   private timeoutDuration = 5000 // 超时时间5秒
 
   constructor(wsManager: any) {
@@ -33,6 +33,12 @@ export class HeartbeatMonitor {
 
   // 发送心跳包
   private sendHeartbeat(ping: string): void {
+    // 如果WebSocket已经断开，不发送心跳
+    if (!this.wsManager.isConnected()) {
+      this.stop()
+      return
+    }
+
     this.wsManager.send({
       type: ping,
       timestamp: Date.now(),
@@ -42,8 +48,11 @@ export class HeartbeatMonitor {
     // 设置超时检测
     this.timeout = setTimeout(() => {
       console.error('心跳超时，准备重连')
-      this.wsManager.disconnect()
-      this.wsManager.connect()
+      // 只有在WebSocket仍然存活时才重连
+      if (this.wsManager.isConnected()) {
+        this.wsManager.disconnect()
+        this.wsManager.connect()
+      }
     }, this.timeoutDuration)
   }
 
