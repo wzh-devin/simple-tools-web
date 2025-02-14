@@ -6,20 +6,7 @@
  * @since 1.0
  */
 
-import { get, post } from '@/api/http'
-
-/**
- * 获取微信二维码
- */
-export async function getWxQr() {
-  try {
-    return await get({
-      url: `/login/wx/qr`
-    })
-  } catch (error) {
-    return Promise.reject(error)
-  }
-}
+import { post } from '@/api/http'
 
 /**
  * 账号登录
@@ -30,7 +17,7 @@ export async function accountLogin(data: {
   password: string
 }) {
   try {
-    await post({
+    return await post({
       url: '/login/account',
       data
     })

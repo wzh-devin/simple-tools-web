@@ -1,15 +1,94 @@
 <script setup lang="ts">
-import useLoginStore from '@/stores/login/login.ts'
+import { onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import useLoginStore from '@/stores/login/login'
+import { WebSocketManager } from '@/api/websocket/websocket'
+import { WsType } from '@/global/enums/ws-type'
+import { TOKEN } from '@/global/constant'
 
+const props = defineProps<{
+  active: boolean
+}>()
+
+const router = useRouter()
 const loginStore = useLoginStore()
+let ws: WebSocketManager | null = null
 
-const handleClick = () => {
-  loginStore.getQrCodeAction()
+// 初始化WebSocket连接
+const initWebSocket = async () => {
+  // 如果已经存在连接，先断开
+  if (ws) {
+    ws.disconnect()
+  }
+
+  // 创建新的WebSocket连接
+  ws = new WebSocketManager(
+    `${import.meta.env.VITE_APP_WS_URL}/wx/${WsType.QR.type}`,
+    WsType.QR
+  )
+
+  // 处理WebSocket消息
+  ws.onMessage(async (message) => {
+    switch (message.type) {
+      case WsType.QR.type: {
+        await loginStore.getQrCodeAction(message.data)
+        break
+      }
+      case WsType.QR.pong: {
+        // 使用枚举中定义的pong类型
+        if (message.data?.loginUrl) {
+          await loginStore.getQrCodeAction(message.data)
+        }
+        break
+      }
+      case WsType.LOGIN.type: {
+        // 保存token到本地缓存
+        localStorage.setItem(TOKEN, message.data)
+        // 关闭WebSocket连接
+        ws?.disconnect()
+        // 跳转到主页
+        await router.push('/main')
+        ElMessage.success('登录成功')
+        break
+      }
+      default:
+        break
+    }
+  })
+
+  try {
+    await ws.connect()
+  } catch (error) {
+    console.error('WebSocket连接失败:', error)
+  }
 }
+
+// 监听active属性变化
+watch(
+  () => props.active,
+  (newVal) => {
+    if (newVal) {
+      initWebSocket()
+    } else if (ws) {
+      // 切换到其他标签时断开WebSocket连接
+      ws.disconnect()
+      ws = null
+    }
+  }
+)
+
+// 组件卸载时确保断开连接
+onUnmounted(() => {
+  if (ws) {
+    ws.disconnect()
+    ws = null
+  }
+})
 </script>
 
 <template>
-  <el-form class="login-form" @click="handleClick">
+  <el-form class="login-form">
     <div class="wechat-login">
       <div class="qr-code">
         <img :src="loginStore.qrCode" alt="微信二维码" />
