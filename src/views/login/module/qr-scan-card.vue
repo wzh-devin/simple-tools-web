@@ -30,12 +30,17 @@ const initWebSocket = async () => {
 
   // 处理WebSocket消息
   ws.onMessage(async (message) => {
-    console.log(message)
+    console.log('收到消息:', message)
     switch (message.type) {
       case WsType.QR.type: {
+        await loginStore.getQrCodeAction(message.data)
+        break
       }
       case WsType.QR.pong: {
-        await loginStore.getQrCodeAction(message.data)
+        // 使用枚举中定义的pong类型
+        if (message.data?.loginUrl) {
+          await loginStore.getQrCodeAction(message.data)
+        }
         break
       }
       case WsType.LOGIN.type: {
@@ -49,6 +54,7 @@ const initWebSocket = async () => {
         break
       }
       default:
+        console.log('未处理的消息类型:', message.type)
         break
     }
   })

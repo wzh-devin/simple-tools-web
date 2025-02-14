@@ -9,7 +9,7 @@ export enum WsType {
   QR = {
     type: '1',
     ping: 'qr_ping',
-    pong: 'qr_pong'
+    pong: 'qr_pong'  // 匹配后端返回的心跳包类型
   },
   LOGIN = {
     type: '2',

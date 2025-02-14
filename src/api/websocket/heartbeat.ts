@@ -33,7 +33,6 @@ export class HeartbeatMonitor {
 
   // 发送心跳包
   private sendHeartbeat(ping: string): void {
-    console.log(ping)
     this.wsManager.send({
       type: ping,
       timestamp: Date.now(),

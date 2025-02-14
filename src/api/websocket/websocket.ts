@@ -103,15 +103,17 @@ export class WebSocketManager {
   private handleMessage(data: any): any {
     try {
       const message = JSON.parse(data)
+      
       // 处理心跳响应
       if (message.type == this.type.pong) {
         this.heartbeat.handlePong()
-        return
       }
+      
       // 如果有回调函数，调用它
       if (this.messageCallback) {
         this.messageCallback(message)
       }
+      
       return message
     } catch (error) {
       console.error('消息解析错误:', error)
