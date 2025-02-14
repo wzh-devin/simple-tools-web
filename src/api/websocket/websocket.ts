@@ -152,17 +152,17 @@ export class WebSocketManager {
     if (this.ws) {
       // 先停止心跳检测
       this.heartbeat.stop()
-      
+
       // 清除所有回调
       this.messageCallback = null
       this.connectResolve = null
       this.connectReject = null
-      
+
       // 重置重连次数
       this.reconnectAttempts = 0
-      
+
       // 关闭连接
-      this.ws.onclose = null  // 移除onclose回调，防止触发重连
+      this.ws.onclose = null // 移除onclose回调，防止触发重连
       this.ws.close()
       this.ws = null
     }
