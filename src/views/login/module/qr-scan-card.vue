@@ -30,7 +30,6 @@ const initWebSocket = async () => {
 
   // 处理WebSocket消息
   ws.onMessage(async (message) => {
-    console.log('收到消息:', message)
     switch (message.type) {
       case WsType.QR.type: {
         await loginStore.getQrCodeAction(message.data)
@@ -44,7 +43,6 @@ const initWebSocket = async () => {
         break
       }
       case WsType.LOGIN.type: {
-        console.log('登录成功，连接已建立')
         // 保存token到本地缓存
         localStorage.setItem(TOKEN, message.data)
         // 关闭WebSocket连接
@@ -55,7 +53,6 @@ const initWebSocket = async () => {
         break
       }
       default:
-        console.log('未处理的消息类型:', message.type)
         break
     }
   })

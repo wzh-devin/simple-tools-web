@@ -1,5 +1,11 @@
 import { TOKEN } from '@/global/constant'
 
+interface HeartbeatType {
+  type: string // 改为 string 类型
+  ping: string
+  pong: string
+}
+
 export class HeartbeatMonitor {
   private wsManager: any
   private intervalId: NodeJS.Timeout | null = null
@@ -12,7 +18,7 @@ export class HeartbeatMonitor {
   }
 
   // 开始心跳检测
-  start(type: { type: number; ping: string; pong: string }): void {
+  start(type: HeartbeatType): void {
     this.stop()
     // 设置定时器，延迟一个完整间隔后再开始发送心跳
     // 因为我们已经在连接建立时发送了第一次心跳

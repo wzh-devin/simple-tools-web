@@ -33,14 +33,11 @@ const initWebSocket = async () => {
 
   // 处理WebSocket消息
   ws.onMessage(async (message) => {
-    console.log('收到消息:', message)
     switch (message.type) {
       case WsType.LOGIN.type: {
-        console.log('登录成功，连接已建立')
         break
       }
       default:
-        console.log('未处理的消息类型:', message.type)
         break
     }
   })

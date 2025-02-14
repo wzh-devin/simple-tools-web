@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 import { TOKEN } from '@/global/constant'
 
 interface IType {
-  type: number
+  type: string
   ping: string
   pong: string
 }
@@ -55,7 +55,6 @@ export class WebSocketManager {
     if (!this.ws) return
 
     this.ws.onopen = () => {
-      console.log('WebSocket连接已建立')
       this.reconnectAttempts = 0
 
       // 连接建立后立即发送一次心跳
@@ -70,7 +69,6 @@ export class WebSocketManager {
     }
 
     this.ws.onclose = () => {
-      console.log('WebSocket连接已关闭')
       this.heartbeat.stop()
       this.attemptReconnect()
       // 连接关闭时reject promise
@@ -80,7 +78,6 @@ export class WebSocketManager {
     }
 
     this.ws.onerror = (error) => {
-      console.error('WebSocket错误:', error)
       // 发生错误时reject promise
       if (this.connectReject) {
         this.connectReject(error)
@@ -142,14 +139,10 @@ export class WebSocketManager {
   // 重连机制
   private attemptReconnect(): void {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error('达到最大重连次数')
       return
     }
 
     this.reconnectAttempts++
-    console.log(
-      `尝试重连 (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
-    )
 
     setTimeout(() => {
       this.connect()

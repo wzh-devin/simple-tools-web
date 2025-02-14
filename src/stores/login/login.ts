@@ -20,6 +20,10 @@ interface IAccount {
   password: string
 }
 
+interface QrCodeData {
+  loginUrl: string
+}
+
 const useLoginStore = defineStore('login', {
   state: (): LoginState => ({
     token: '',
@@ -37,7 +41,7 @@ const useLoginStore = defineStore('login', {
       }
     },
     // 获取微信二维码
-    async getQrCodeAction(data: string) {
+    async getQrCodeAction(data: QrCodeData) {
       try {
         this.qrCode = await QRCode.toDataURL(data?.loginUrl, {
           width: 160,
