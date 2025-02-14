@@ -14,6 +14,8 @@ export class HeartbeatMonitor {
   // 开始心跳检测
   start(type: { type: number; ping: string; pong: string }): void {
     this.stop()
+    // 设置定时器，延迟一个完整间隔后再开始发送心跳
+    // 因为我们已经在连接建立时发送了第一次心跳
     this.intervalId = setInterval(() => {
       this.sendHeartbeat(type.ping)
     }, this.interval)
