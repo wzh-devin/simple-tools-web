@@ -11,8 +11,8 @@ const loginStore = useLoginStore()
 
 // 账号登录表单
 const loginForm = reactive({
-  username: '',
-  password: ''
+  username: 'devin',
+  password: '123456'
 })
 
 // 表单校验规则

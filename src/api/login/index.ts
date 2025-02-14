@@ -17,7 +17,7 @@ export async function accountLogin(data: {
   password: string
 }) {
   try {
-    await post({
+    return await post({
       url: '/login/account',
       data
     })

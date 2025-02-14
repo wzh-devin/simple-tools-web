@@ -8,6 +8,7 @@
 import { defineStore } from 'pinia'
 import { accountLogin } from '@/api/login'
 import QRCode from 'qrcode'
+import { TOKEN } from '@/global/constant'
 
 interface LoginState {
   token: string
@@ -28,7 +29,9 @@ const useLoginStore = defineStore('login', {
     // 账号登录
     async accountLoginAction(data: IAccount) {
       try {
-        await accountLogin(data)
+        const result = await accountLogin(data)
+        // 将token信息保存到本地
+        localStorage.setItem(TOKEN, result?.data)
       } catch (error) {
         return Promise.reject(error)
       }
