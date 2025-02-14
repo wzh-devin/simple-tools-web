@@ -50,7 +50,7 @@ const initWebSocket = async () => {
         // 关闭WebSocket连接
         ws?.disconnect()
         // 跳转到主页
-        await router.push('/')
+        await router.push('/main')
         ElMessage.success('登录成功')
         break
       }

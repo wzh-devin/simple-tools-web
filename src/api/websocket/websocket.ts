@@ -57,14 +57,14 @@ export class WebSocketManager {
     this.ws.onopen = () => {
       console.log('WebSocket连接已建立')
       this.reconnectAttempts = 0
-      
+
       // 连接建立后立即发送一次心跳
       this.send({
         type: this.type.ping,
         timestamp: Date.now(),
         token: localStorage.getItem(TOKEN)
       })
-      
+
       // 然后开始定时心跳
       this.heartbeat.start(this.type)
     }

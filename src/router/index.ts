@@ -60,26 +60,37 @@ router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem(TOKEN)
   const isLoginPage = to.path === '/login'
 
-  if (token) {
-    if (isLoginPage) {
-      // 已登录且要跳转登录页，重定向到主页
-      next('/')
-    } else {
-      // 已登录且不是登录页，确保WebSocket连接
-      if (!ws || !ws.isConnected()) {
-        await initLoginWebSocket()
-      }
-      next()
+  // 如果是登录页，清除现有token和连接
+  if (isLoginPage) {
+    localStorage.removeItem(TOKEN)
+    if (ws) {
+      ws.disconnect()
+      ws = null
     }
-  } else {
-    if (isLoginPage) {
-      // 未登录且要跳转登录页
-      next()
-    } else {
-      // 未登录且要跳转其他页面，重定向到登录页
-      next('/login')
-    }
+    next()
+    return
   }
+
+  // 如果没有token且不是登录页，重定向到登录页
+  if (!token) {
+    next('/login')
+    return
+  }
+
+  // 如果有token且不是登录页，确保WebSocket连接
+  try {
+    if (!ws || !ws.isConnected()) {
+      await initLoginWebSocket()
+    }
+  } catch (error) {
+    // WebSocket连接失败，可能是token无效
+    console.error('WebSocket连接失败，重定向到登录页')
+    localStorage.removeItem(TOKEN)
+    next('/login')
+    return
+  }
+
+  next()
 })
 
 // 路由切换时检查WebSocket连接
