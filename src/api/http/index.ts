@@ -13,9 +13,9 @@ import type { AxiosRequestConfig } from 'axios'
  * @param config
  * @return Promise
  */
-export function get(config: AxiosRequestConfig): Promise {
+export function get(config: AxiosRequestConfig): Promise<any> {
   return new Promise((resolve, reject) => {
-    axiosInstance.get(config.url).then(
+    axiosInstance.get(config.url || '').then(
       // 响应成功，返回数据
       (response) => resolve(response?.data),
       // 响应失败，返回错误信息
@@ -29,12 +29,12 @@ export function get(config: AxiosRequestConfig): Promise {
  * @param config
  * @return Promise
  */
-export function post(config: AxiosRequestConfig): Promise {
+export function post(config: AxiosRequestConfig): Promise<any> {
   return new Promise((resolve, reject) => {
-    axiosInstance.post(config.url, config.data).then(
+    axiosInstance.post(config.url || '', config.data).then(
       // 响应成功，返回数据
       (response) => resolve(response?.data),
-      // 响应失败，返回错误信息
+      // 响应失败，向上抛出错误数据
       (error) => reject(error)
     )
   })
@@ -45,9 +45,9 @@ export function post(config: AxiosRequestConfig): Promise {
  * @param config
  * @return Promise
  */
-export function put(config: AxiosRequestConfig): Promise {
+export function put(config: AxiosRequestConfig): Promise<any> {
   return new Promise((resolve, reject) => {
-    axiosInstance.post(config.url, config.data).then(
+    axiosInstance.put(config.url || '', config.data).then(
       // 响应成功，返回数据
       (response) => resolve(response?.data),
       // 响应失败，返回错误信息
@@ -61,9 +61,9 @@ export function put(config: AxiosRequestConfig): Promise {
  * @param config
  * @return Promise
  */
-export function del(config: AxiosRequestConfig): Promise {
+export function del(config: AxiosRequestConfig): Promise<any> {
   return new Promise((resolve, reject) => {
-    axiosInstance.delete(config.url, config.data).then(
+    axiosInstance.delete(config.url || '', { data: config.data }).then(
       // 响应成功，返回数据
       (response) => resolve(response?.data),
       // 响应失败，返回错误信息

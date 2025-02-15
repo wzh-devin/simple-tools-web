@@ -7,9 +7,14 @@
  * @since 1.0
  */
 import { Delete, Plus, Search } from '@element-plus/icons-vue'
-import { defineEmits } from 'vue'
+import { defineEmits, ref, watch } from 'vue'
+import type { IOperationProps } from '@/components/page/page-operation/opreation'
 
-const emit = defineEmits(['handleAdd'])
+const emit = defineEmits(['handleAdd', 'handleSearch'])
+
+const props = defineProps<IOperationProps>()
+
+const searchData = ref(props.operationConfig.searchDtl?.searchData)
 
 // 处理批量删除
 const handleBatchDelete = () => {
@@ -19,15 +24,20 @@ const handleBatchDelete = () => {
 // 处理新增
 const handleAdd = () => {
   // TODO: 实现新增逻辑
-  emit('handleAdd', 'test')
+  emit('handleAdd')
 }
+
+watch(searchData, (newVal) => {
+  emit('handleSearch', newVal)
+})
 </script>
 
 <template>
   <div class="operation-area">
     <!-- TODO 搜索框 -->
     <el-input
-      placeholder="请输入类目名称或编码"
+      v-model="searchData"
+      :placeholder="props.operationConfig.searchDtl?.placeholder"
       class="search-input"
       :prefix-icon="Search"
       clearable

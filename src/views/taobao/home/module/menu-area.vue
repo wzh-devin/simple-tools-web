@@ -6,12 +6,21 @@
  * @version 1.0
  * @since 1.0
  */
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, computed } from 'vue'
 import { Document, Goods } from '@element-plus/icons-vue'
 
 const router = useRouter()
-const activeMenu = ref('home')
+const route = useRoute()
+
+// 根据当前路由计算激活的菜单项
+const activeMenu = computed(() => {
+  const path = route.path
+  if (path.includes('commodity')) {
+    return 'commodity'
+  }
+  return 'category'
+})
 
 const menus = [
   { key: 'category', name: '类目管理', icon: Document },
@@ -19,7 +28,6 @@ const menus = [
 ]
 
 const handleMenuClick = (key: string) => {
-  activeMenu.value = key
   router.push(`/taobao/${key}`)
 }
 </script>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="CategoryManage">
 /**
  * 2025/1/19 0:37
  * @author <a href="https://github.com/wzh-devin">devin</a>
@@ -6,33 +6,129 @@
  * @version 1.0
  * @since 1.0
  */
-import {
-  ModalCmp,
-  OperationCmp,
-  TableCmp
-} from '@/views/taobao/category/module'
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import useCategoryStore from '@/stores/taobao/category/category.ts'
+import operationConfig from '@/views/taobao/category/config/operation.config.ts'
+import modalConfig from '@/views/taobao/category/config/modal.config.ts'
+import type OperationCmp from '@/components/page/page-operation/operation-cmp.vue'
+import type ModalCmp from '@/components/page/page-modal/modal-cmp.vue'
+import type TableCmp from '@/components/page/page-table/table-cmp.vue'
+import tableConfig from '@/views/taobao/category/config/table.config.ts'
+import { storeToRefs } from 'pinia'
+import type { ICategory } from '@/stores/taobao/category/i-category'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
+const categoryStore = useCategoryStore()
+const { categoryList } = storeToRefs(categoryStore)
+const router = useRouter()
+
+const tableRef = ref<InstanceType<typeof TableCmp>>()
 const modalRef = ref<InstanceType<typeof ModalCmp>>()
+
+onMounted(async () => {
+  await refreshTable()
+})
+
+// 刷新
+const refreshTable = async () => {
+  await categoryStore.getCategoryListAction()
+}
 
 /**
  * 执行新增
  */
 const handleAdd = () => {
-  console.log('执行新增')
-  modalRef.value?.setDialogVisible(true)
+  modalRef.value?.setModalVisible(true)
+}
+
+const modalConfigRef = computed(() => {
+  // TODO 自定义配置内容
+  return modalConfig
+})
+
+const tableConfigRef = computed(() => {
+  return {
+    ...tableConfig,
+    tableData: categoryList.value
+  }
+})
+
+const handleConfirm = async (formData: any) => {
+  try {
+    if (formData.id) {
+      // 执行编辑操作
+      await categoryStore.editCategoryAction(formData)
+    } else {
+      // 执行新增操作
+      await categoryStore.addCategoryAction(formData)
+    }
+    await refreshTable()
+    ElMessage.success('执行成功')
+  } catch (error) {
+    ElMessage.error('创建失败')
+  }
+}
+
+// 处理编辑
+const handleEdit = (row: ICategory) => {
+  modalRef.value?.setModalVisible(false, row) // 传递完整数据到弹窗
+}
+
+// 处理删除
+const handleDelete = async (row: ICategory) => {
+  try {
+    await categoryStore.deleteCategoryAction(row.id)
+    await refreshTable()
+    ElMessage.success('删除成功')
+  } catch (error: any) {
+    ElMessage.error(error?.message || '删除失败')
+  }
+}
+
+// 选中的行数据
+const selectedRows = ref<ICategory[]>([])
+
+// 处理选择变化
+const handleSelectionChange = (selection: ICategory[]) => {
+  selectedRows.value = selection
+}
+
+// 跳转子节点
+const handleChildTree = (row: ICategory) => {
+  router.push({
+    path: '/taobao/category/sub-category',
+    query: {
+      categoryId: row.id?.toString()
+    }
+  })
 }
 </script>
 
 <template>
   <div class="category-container">
     <!-- 操作按钮区域 -->
-    <operation-cmp @handle-add="handleAdd" />
+    <operation-cmp
+      :operation-config="operationConfig"
+      @handle-add="handleAdd"
+    />
 
     <!-- 表格区域 -->
-    <table-cmp />
+    <table-cmp
+      ref="tableRef"
+      :table-config="tableConfigRef"
+      @edit="handleEdit"
+      @delete="handleDelete"
+      @selection-change="handleSelectionChange"
+      @handle-child-tree="handleChildTree"
+    />
 
-    <modal-cmp ref="modalRef" />
+    <!-- 弹窗组件 -->
+    <modal-cmp
+      ref="modalRef"
+      :modal-config="modalConfigRef"
+      @confirm="handleConfirm"
+    />
   </div>
 </template>
 

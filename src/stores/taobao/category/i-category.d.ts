@@ -8,13 +8,21 @@
 export interface ICategory {
   id: number
   name: string
+  parentId?: number
   description: string
   isActive: number
   createTime: string
   updateTime: string
 }
 
+export interface ISelectData {
+  label: string
+  value: number | string
+}
+
 export interface ICategoryState {
   categoryList: ICategory[]
+  categoryItems: ICategory[]
   selectedRows: ICategory[]
+  selectData?: ISelectData[]
 }
