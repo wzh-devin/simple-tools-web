@@ -10,50 +10,56 @@ import type { RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'root',
-    redirect: '/login'
+    component: () => import('@/layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'root',
+        redirect: '/login'
+      },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/views/login/index.vue')
+      },
+      {
+        path: 'main',
+        name: 'main',
+        component: () => import('@/views/main/index.vue')
+      },
+      {
+        path: 'taobao',
+        name: 'taobao',
+        component: () => import('@/views/taobao/home/index.vue'),
+        children: [
+          {
+            path: 'category',
+            name: 'category',
+            component: () => import('@/views/taobao/category/index.vue')
+          },
+          {
+            path: 'commodity',
+            name: 'commodity',
+            component: () => import('@/views/taobao/commodity/index.vue')
+          },
+          {
+            path: 'category/sub-category',
+            name: 'sub-category',
+            component: () =>
+              import('@/views/taobao/category/sub-category/index.vue')
+          },
+          {
+            path: 'commodity/link',
+            name: 'link',
+            component: () => import('@/views/taobao/commodity/link/index.vue')
+          }
+        ]
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)',
     component: () => import('@/views/not-found/NotFound.vue')
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login/index.vue')
-  },
-  {
-    path: '/main',
-    name: 'main',
-    component: () => import('@/views/main/index.vue')
-  },
-  {
-    path: '/taobao',
-    name: 'taobao',
-    component: () => import('@/views/taobao/home/index.vue'),
-    children: [
-      {
-        path: 'category',
-        name: 'category',
-        component: () => import('@/views/taobao/category/index.vue')
-      },
-      {
-        path: 'commodity',
-        name: 'commodity',
-        component: () => import('@/views/taobao/commodity/index.vue')
-      },
-      {
-        path: 'category/sub-category',
-        name: 'sub-category',
-        component: () =>
-          import('@/views/taobao/category/sub-category/index.vue')
-      },
-      {
-        path: 'commodity/link',
-        name: 'link',
-        component: () => import('@/views/taobao/commodity/link/index.vue')
-      }
-    ]
   }
 ]
 

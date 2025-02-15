@@ -7,14 +7,18 @@
  * @since 1.0
  */
 import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { MainCard } from '@/views/main/module'
 import { WebSocketManager } from '@/api/websocket/websocket'
 import { WsType } from '@/global/enums/ws-type'
 import { TOKEN } from '@/global/constant'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 defineComponent({
   name: 'Main'
 })
+
+const router = useRouter()
 
 let ws: WebSocketManager | null = null
 
@@ -61,24 +65,44 @@ onUnmounted(() => {
     ws = null
   }
 })
+
+// 处理卡片点击
+const handleCardClick = () => {
+  router.push('/taobao/category')
+}
 </script>
 
 <template>
   <div class="main-container">
-    <main-card />
+    <main-card @click="handleCardClick" />
   </div>
 </template>
 
 <style lang="less" scoped>
 .main-container {
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 20px;
   background-color: #e0eaff;
   width: 100%;
+  height: 100vh;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+* {
+  -ms-overflow-style: none;
 }
 </style>
