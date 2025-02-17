@@ -5,7 +5,7 @@
  * @version 1.0
  * @since 1.0
  */
-import axios, { type AxiosInstance } from 'axios'
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios'
 import { BASE_URL, TIME_OUT } from '../config'
 import { getToken } from '@/utils/auth'
 
@@ -19,16 +19,13 @@ const axiosInstance: AxiosInstance = axios.create({
 
 // 请求拦截器
 axiosInstance.interceptors.request.use(
-  (request) => {
+  (config: InternalAxiosRequestConfig) => {
     // 添加 token 到请求头
     const token = getToken()
-    if (token) {
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ${token}`
-      }
+    if (token) {  
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return request
+    return config
   },
   (error) => {
     return error
