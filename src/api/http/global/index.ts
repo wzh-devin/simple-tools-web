@@ -7,6 +7,7 @@
  */
 import axios, { type AxiosInstance } from 'axios'
 import { BASE_URL, TIME_OUT } from '../config'
+import { getToken } from '@/utils/auth'
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -19,6 +20,14 @@ const axiosInstance: AxiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (request) => {
+    // 添加 token 到请求头
+    const token = getToken()
+    if (token) {
+      request.headers = {
+        ...request.headers,
+        Authorization: `Bearer ${token}`
+      }
+    }
     return request
   },
   (error) => {
